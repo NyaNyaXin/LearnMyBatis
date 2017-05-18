@@ -16,6 +16,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	</environments>
 	<mappers>
 		<!-- 将写好的sql映射文件一定要注册到全局配置文件中 -->
-		<mapper resource="Employee.xml" />
+		<mapper resource="EmployeeMapper.xml" />
 	</mappers>
 </configuration>

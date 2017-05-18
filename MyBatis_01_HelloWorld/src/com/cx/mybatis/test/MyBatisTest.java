@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 
 import com.cx.mybatis.bean.Employee;
+import com.cx.mybatis.dao.EmployeeMapper;
 
 public class MyBatisTest {
 
@@ -26,19 +27,44 @@ public class MyBatisTest {
 	 **/
 	@Test
 	public void test() throws IOException {
-		String resource = "mybatis-config.xml";
-		InputStream inputStream = Resources.getResourceAsStream(resource);
-		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+		
+		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
 		// 2.获取SqlSession实例，能直接执行已经映射的sql语句
 		// arg0:sql的唯一标识符
 		// arg1:执行sql要用到的参数
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
-			Employee employee = session.selectOne("com.cx.mybatis.selectEmployee", "1");
+			Employee employee = session.selectOne("com.cx.mybatis.selectEmployee", 1);
 			System.out.println(employee);
 		} finally {
 			session.close();
 		}
+		
+		
+	}
+	private SqlSessionFactory getSqlSessionFactory() throws IOException {
+		String resource = "mybatis-config.xml";
+		InputStream inputStream = Resources.getResourceAsStream(resource);
+		return new SqlSessionFactoryBuilder().build(inputStream);
+	}
+	@Test
+	public void test01() throws IOException {
+		//1.获取SqlSessionFactory对象
+		SqlSessionFactory sessionFactory = getSqlSessionFactory();
+		//2.获取SqlSession对象
+		SqlSession session = sessionFactory.openSession();
+		try {
+		//3.获取接口的实现类对象
+		//会为接口自动的创建一个代理对象，代理对象去执行CRUD操作
+		EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
+		
+		Employee employee = mapper.getEmpById(1);
+		System.out.println(mapper.getClass());
+		System.out.println(employee);
+		}finally {
+			session.close();
+		}
+		
 	}
 
 }
