@@ -9,6 +9,16 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		url：引入网络路径或磁盘资源
 	 -->
 	<properties resource="dbconfig.properties"></properties>
+	<!-- 
+		2.settings包含很多重要的设置项
+		setting用来设置每一个设置项
+		name设置项名
+		value设置项值
+		mapUnderscoreToCamelCase开启驼峰命名
+	 -->
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC" />
