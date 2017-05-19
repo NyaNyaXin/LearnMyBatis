@@ -3,53 +3,30 @@
 PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-	<!-- 
-		1.mybatis可以使用properties来引入properties配置文件的内容
-		resource：引入类路径下的资源
-		url：引入网络路径或磁盘资源
-	 -->
+	<!-- 1.mybatis可以使用properties来引入properties配置文件的内容 resource：引入类路径下的资源 url：引入网络路径或磁盘资源 -->
 	<properties resource="dbconfig.properties"></properties>
-	
-	<!-- 
-		2.settings包含很多重要的设置项
-		setting用来设置每一个设置项
-		name设置项名
-		value设置项值
-		mapUnderscoreToCamelCase开启驼峰命名
-	 -->
+
+	<!-- 2.settings包含很多重要的设置项 setting用来设置每一个设置项 name设置项名 value设置项值 mapUnderscoreToCamelCase开启驼峰命名 -->
 	<settings>
-		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
 	</settings>
-	
-	<!-- 
-		3.typeAliases:别名处理器，可以为java类型起别名，别名不区分大小写
-		typeAlias：为某个java类型起别名
-		type：要起别名的类型的全类名;默认别名就是类名小写;employee
-		alias:指定新的别名
-	 -->
+
+	<!-- 3.typeAliases:别名处理器，可以为java类型起别名，别名不区分大小写 typeAlias：为某个java类型起别名 type：要起别名的类型的全类名;默认别名就是类名小写;employee 
+		alias:指定新的别名 -->
 	<typeAliases>
-		<!-- <typeAlias type="com.cx.mybatis.bean.Employee" alias="emp"/>  -->
-		<!-- package:为某个包下的所有类批量起别名
-			name属性指定包名(为当前包以及子包给一个类都起一个默认的别名[即类名小写])
-		 -->
-		 <package name="com.cx.mybatis.bean"/>
-		 <!-- 批量起别名的情况下：也可以使用@Alias注解为某个类型指定新的别名 -->
+		<!-- <typeAlias type="com.cx.mybatis.bean.Employee" alias="emp"/> -->
+		<!-- package:为某个包下的所有类批量起别名 name属性指定包名(为当前包以及子包给一个类都起一个默认的别名[即类名小写]) -->
+		<package name="com.cx.mybatis.bean" />
+		<!-- 批量起别名的情况下：也可以使用@Alias注解为某个类型指定新的别名 -->
 	</typeAliases>
-	
-	
-	<!--
-		4.environments:环境们，mybatis可以配置多种环境 ，default属性指定使用某种环境。可以达到快速切换
-		environment：配置一个具体的环境信息,必须有两个子标签；id属性代表当前环境的唯一标识
-		transactionManager：事务管理器
-			type属性：事务管理器的类型	 type=”[JDBC(JdbcTransactionFactory)|MANAGED(ManagedTransactionFactory)]”
-			自定义事务管理器：是想TransactionFactory接口，type指定全类名
-		dataSource：数据源；type=”[UNPOOLED(UnpooledDataSourceFactory)|
-								  POOLED(PooledDataSourceFactory)|
-								  JNDI(JndiDataSourceFactory)]”
-					自定义数据源：实现DataSourceFactory接口
-	-->
+
+
+	<!-- 4.environments:环境们，mybatis可以配置多种环境 ，default属性指定使用某种环境。可以达到快速切换 environment：配置一个具体的环境信息,必须有两个子标签；id属性代表当前环境的唯一标识 
+		transactionManager：事务管理器 type属性：事务管理器的类型 type=”[JDBC(JdbcTransactionFactory)|MANAGED(ManagedTransactionFactory)]” 
+		自定义事务管理器：是想TransactionFactory接口，type指定全类名 dataSource：数据源；type=”[UNPOOLED(UnpooledDataSourceFactory)| 
+		POOLED(PooledDataSourceFactory)| JNDI(JndiDataSourceFactory)]” 自定义数据源：实现DataSourceFactory接口 -->
 	<environments default="development">
-	
+
 		<environment id="test">
 			<transactionManager type="JDBC"></transactionManager>
 			<dataSource type="POOLED">
@@ -59,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 				<property name="password" value="${jdbc.password}" />
 			</dataSource>
 		</environment>
-	
+
 		<environment id="development">
 			<transactionManager type="JDBC" />
 			<dataSource type="POOLED">
@@ -70,7 +47,15 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 			</dataSource>
 		</environment>
 	</environments>
-	
+	<!-- 5.databaseIdProvider支持多数据库厂商 type="DB_VENDOR"：VendorDatabaseIdProvider 
+		作用就是得到数据库厂商的标识(驱动)，mybatis就能根据数据库厂商标识来执行不同的sql -->
+	<databaseIdProvider type="DB_VENDOR">
+		<property name="SQL Server" value="sqlserver" />
+		<property name="DB2" value="db2" />
+		<property name="Oracle" value="oracle" />
+		<property name="MySQL" value="mysql"/>
+	</databaseIdProvider>
+
 	<mappers>
 		<!-- 将写好的sql映射文件一定要注册到全局配置文件中 -->
 		<mapper resource="EmployeeMapper.xml" />
