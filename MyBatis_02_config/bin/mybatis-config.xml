@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		url：引入网络路径或磁盘资源
 	 -->
 	<properties resource="dbconfig.properties"></properties>
+	
 	<!-- 
 		2.settings包含很多重要的设置项
 		setting用来设置每一个设置项
@@ -19,6 +20,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<settings>
 		<setting name="mapUnderscoreToCamelCase" value="true"/>
 	</settings>
+	
 	<!-- 
 		3.typeAliases:别名处理器，可以为java类型起别名，别名不区分大小写
 		typeAlias：为某个java类型起别名
@@ -33,7 +35,31 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		 <package name="com.cx.mybatis.bean"/>
 		 <!-- 批量起别名的情况下：也可以使用@Alias注解为某个类型指定新的别名 -->
 	</typeAliases>
+	
+	
+	<!--
+		4.environments:环境们，mybatis可以配置多种环境 ，default属性指定使用某种环境。可以达到快速切换
+		environment：配置一个具体的环境信息,必须有两个子标签；id属性代表当前环境的唯一标识
+		transactionManager：事务管理器
+			type属性：事务管理器的类型	 type=”[JDBC(JdbcTransactionFactory)|MANAGED(ManagedTransactionFactory)]”
+			自定义事务管理器：是想TransactionFactory接口，type指定全类名
+		dataSource：数据源；type=”[UNPOOLED(UnpooledDataSourceFactory)|
+								  POOLED(PooledDataSourceFactory)|
+								  JNDI(JndiDataSourceFactory)]”
+					自定义数据源：实现DataSourceFactory接口
+	-->
 	<environments default="development">
+	
+		<environment id="test">
+			<transactionManager type="JDBC"></transactionManager>
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+		</environment>
+	
 		<environment id="development">
 			<transactionManager type="JDBC" />
 			<dataSource type="POOLED">
