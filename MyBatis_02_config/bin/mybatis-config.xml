@@ -56,8 +56,23 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<property name="MySQL" value="mysql"/>
 	</databaseIdProvider>
 
+	<!-- 6.mappers:将sql映射注册到全局配置中
+			注册配置文件
+			resource：引用类路径下的sql映射文件
+			url:引用网络路径或磁盘路径下的sql映射文件
+			注册接口
+			class：引用(注册)接口 
+				1.有sql映射文件，映射文件必须和接口同名，并且放在同一目录下
+				2.没有sql映射文件，所有sql都是利用注解写在接口上的
+				推荐：比较重要的，复杂的Dao接口写sql映射文件
+					  不重要，简单的Dao接口为了开发快速可以使用注解；
+	 -->
 	<mappers>
 		<!-- 将写好的sql映射文件一定要注册到全局配置文件中 -->
-		<mapper resource="EmployeeMapper.xml" />
+		<!-- <mapper resource="EmployeeMapper.xml" /> 
+		<mapper class="com.cx.mybatis.dao.EmployeeMapper"/>
+		<mapper class="com.cx.mybatis.dao.EmployeeMapperAnnotation"/> -->
+		<!-- 批量注册： -->
+		<package name="com.cx.mybatis.dao"/>
 	</mappers>
 </configuration>
