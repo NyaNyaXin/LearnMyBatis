@@ -93,6 +93,8 @@ public class MyBatisTest {
 	 * 1.Mybatis允许增删改直接定义一下类型返回值
 	 * 		Integer,Long,Boolean
 	 * 2.需要手动提交数据
+	 * 		sqlSessionFactory.openSession();===>需要手动提交
+	 * 		sqlSessionFactory.openSession(true);===>自动提交
 	 * **/
 	@Test
 	public void test03() throws IOException {
@@ -102,16 +104,17 @@ public class MyBatisTest {
 		try {
 			EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
 			//测试插入
-//			Employee employee = new Employee(null,"chen", "chen@163.com", "0");
-//			mapper.addEmployee(employee);
+			Employee employee = new Employee(null,"chen", "chen@163.com", "0");
+			mapper.addEmployee(employee);
+			System.out.println(employee.getId());
 			
 			//测试修改
 //			Employee employee = new Employee(1,"xin", "xin@163.com", "1");
 //			mapper.updateEmployee(employee);
 			
-			//测试删除
-			long a= mapper.delete(2);
-			System.out.println(a);
+//			//测试删除
+//			long a= mapper.delete(2);
+//			System.out.println(a);
 			
 			//2.手动提交
 			openSession.commit();
