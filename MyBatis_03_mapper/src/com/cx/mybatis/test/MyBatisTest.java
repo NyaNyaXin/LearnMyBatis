@@ -122,5 +122,21 @@ public class MyBatisTest {
 			openSession.close();
 		}
 	}
+	
+	
+	@Test
+	public void test04() throws IOException {
+		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+		//1.获取到的sqlsession不会自动提交数据
+		SqlSession openSession = sqlSessionFactory.openSession();
+		try {
+			EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+			Employee employee = mapper.getEmpByIdAndLastName(1, "chen");
+			System.out.println(employee);
+		}finally {
+			openSession.close();
+		}
+	}
+	
 
 }
