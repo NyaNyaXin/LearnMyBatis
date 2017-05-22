@@ -1,10 +1,13 @@
 package com.cx.mybatis.dao;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.cx.mybatis.bean.Employee;
 
 public interface EmployeeMapper {
+	public Employee getEmpByMap(Map<String, Object> map);
 	public Employee getEmpByIdAndLastName(@Param("id")Integer id,@Param("lastName")String lastName);
 	public Employee getEmpById(Integer id);
 	public long addEmployee(Employee employee);
