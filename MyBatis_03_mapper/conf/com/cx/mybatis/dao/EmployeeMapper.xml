@@ -18,6 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<!-- 
 		parameterType:可以省略
+		获取自增主键的值：
 		mysql支持自增主键，自增主键值的获取，mybatis也是利用statement.getGenreatedKeys();
 		useGeneratedKeys:属性值设置为true,使用自增主键获取主键值策略
 		keyProperty：指定对应的主键属性,也就是mybatis获取到主键值以后,将这个值封装给JavaBean的哪个属性
@@ -27,6 +28,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into tbl_employee(last_name,email,gender) values(#{lastName},#{email},#{gender})
 	</insert>
 	
+	<!-- 
+		Oracle不支持自增;使用序列来模拟自增
+		每次插入的数据库的主键都是从序列中拿到的值；如何获取到这个值：查询对应的序列中的nextval作为对象的id
+		Mybatis中使用selectKey来查询主键：属性keyPropety:查询出的主键值封装给javaBean的哪个属性
+		order属性的"BEFORE"，执行顺序 resultType：类型
+		Before运行顺序：
+			先运行查询id的sql：查出id封装给JavaBean的属性 nextval
+			再运行插入的sql
+		After的运行顺序：
+			先运行插入的sql(直接从序列中取出新值的id)
+			在运行获取当前id的sqlcurrval
+	 -->
 	<update id="updateEmployee">
 		update tbl_employee 
 		set last_name = #{lastName},email = #{email},gender = #{gender} 
