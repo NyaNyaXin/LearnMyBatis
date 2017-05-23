@@ -137,6 +137,7 @@ public class MyBatisTest {
 			Map<String,Object> map = new HashMap();
 			map.put("id", 1);
 			map.put("lastName", "chen");
+			map.put("tableName", "tbl_employee");
 			Employee employee = mapper.getEmpByMap(map);
 			System.out.println(employee);
 		}finally {

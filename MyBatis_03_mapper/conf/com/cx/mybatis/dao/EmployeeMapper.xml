@@ -10,9 +10,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- public Employee getEmpByMap(Map<String, Object> map); -->
 	
 	<select id="getEmpByMap" resultType="com.cx.mybatis.bean.Employee">
-		select id,last_name,email,gender from tbl_employee where id
+		select id,last_name,email,gender from ${tableName} where id
 		=
-		#{id} and last_name = #{lastName}
+		${id} and last_name = #{lastName}
 	</select>
 	
 	<!-- public Employee getEmpByIdAndLastName(Integer id,String lastName); -->
