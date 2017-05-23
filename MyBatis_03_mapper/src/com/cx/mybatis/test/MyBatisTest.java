@@ -139,10 +139,18 @@ public class MyBatisTest {
 			 * "tbl_employee"); Employee employee = mapper.getEmpByMap(map);
 			 */
 
-			List<Employee> employees = mapper.getEmpsByLastNameLike("%c%");
-			for (Employee employee : employees) {
-				System.out.println(employee);
-			}
+//			List<Employee> employees = mapper.getEmpsByLastNameLike("%c%");
+//			for (Employee employee : employees) {
+//				System.out.println(employee);
+//			}
+//			
+//			Map<String, Object> map = mapper.getEmpByIdReturnMap(1);
+//			System.out.println(map);
+			
+			
+			Map<Integer, Employee> map = mapper.getEmpByLastNameLikeReturnMap("%c%");
+			System.out.println(map);
+			
 		} finally {
 			openSession.close();
 		}
