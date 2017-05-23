@@ -15,6 +15,7 @@ import org.junit.Test;
 import com.cx.mybatis.bean.Employee;
 import com.cx.mybatis.dao.EmployeeMapper;
 import com.cx.mybatis.dao.EmployeeMapperAnnotation;
+import com.cx.mybatis.dao.EmployeeMapperPlus;
 
 /**
  * 1.接口式编程 原生： Dao ======> DaoImpl MyBatis： Mapper ======> xxMapper.xml
@@ -139,20 +140,32 @@ public class MyBatisTest {
 			 * "tbl_employee"); Employee employee = mapper.getEmpByMap(map);
 			 */
 
-//			List<Employee> employees = mapper.getEmpsByLastNameLike("%c%");
-//			for (Employee employee : employees) {
-//				System.out.println(employee);
-//			}
-//			
-//			Map<String, Object> map = mapper.getEmpByIdReturnMap(1);
-//			System.out.println(map);
-			
-			
+			// List<Employee> employees = mapper.getEmpsByLastNameLike("%c%");
+			// for (Employee employee : employees) {
+			// System.out.println(employee);
+			// }
+			//
+			// Map<String, Object> map = mapper.getEmpByIdReturnMap(1);
+			// System.out.println(map);
+
 			Map<Integer, Employee> map = mapper.getEmpByLastNameLikeReturnMap("%c%");
 			System.out.println(map);
-			
+
 		} finally {
 			openSession.close();
+		}
+	}
+
+	@Test
+	public void test05() throws IOException {
+		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			EmployeeMapperPlus mapper = session.getMapper(EmployeeMapperPlus.class);
+			Employee employee = mapper.getEmpById(1);
+			System.out.println(employee);
+		} finally {
+			session.close();
 		}
 	}
 
