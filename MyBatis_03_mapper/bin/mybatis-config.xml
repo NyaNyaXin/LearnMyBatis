@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<!-- 2.settings包含很多重要的设置项 setting用来设置每一个设置项 name设置项名 value设置项值 mapUnderscoreToCamelCase开启驼峰命名 -->
 	<settings>
 		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
 
 	<!-- 3.typeAliases:别名处理器，可以为java类型起别名，别名不区分大小写 typeAlias：为某个java类型起别名 type：要起别名的类型的全类名;默认别名就是类名小写;employee 

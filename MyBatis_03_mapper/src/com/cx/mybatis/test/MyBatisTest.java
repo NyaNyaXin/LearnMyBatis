@@ -3,6 +3,7 @@ package com.cx.mybatis.test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
@@ -76,6 +77,7 @@ public class MyBatisTest {
 		}
 
 	}
+
 	@Test
 	public void test02() throws IOException {
 		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
@@ -86,64 +88,64 @@ public class MyBatisTest {
 			System.out.println(employee);
 		} finally {
 			session.close();
-			
+
 		}
 
 	}
-	
+
 	/**
-	 * 1.Mybatis允许增删改直接定义一下类型返回值
-	 * 		Integer,Long,Boolean
-	 * 2.需要手动提交数据
-	 * 		sqlSessionFactory.openSession();===>需要手动提交
-	 * 		sqlSessionFactory.openSession(true);===>自动提交
-	 * **/
+	 * 1.Mybatis允许增删改直接定义一下类型返回值 Integer,Long,Boolean 2.需要手动提交数据
+	 * sqlSessionFactory.openSession();===>需要手动提交
+	 * sqlSessionFactory.openSession(true);===>自动提交
+	 **/
 	@Test
 	public void test03() throws IOException {
 		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
-		//1.获取到的sqlsession不会自动提交数据
+		// 1.获取到的sqlsession不会自动提交数据
 		SqlSession openSession = sqlSessionFactory.openSession();
 		try {
 			EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
-			//测试插入
-			Employee employee = new Employee(null,"chen", "chen@163.com", "0");
+			// 测试插入
+			Employee employee = new Employee(null, "chen", "chen@163.com", "0");
 			mapper.addEmployee(employee);
 			System.out.println(employee.getId());
-			
-			//测试修改
-//			Employee employee = new Employee(1,"xin", "xin@163.com", "1");
-//			mapper.updateEmployee(employee);
-			
-//			//测试删除
-//			long a= mapper.delete(2);
-//			System.out.println(a);
-			
-			//2.手动提交
+
+			// 测试修改
+			// Employee employee = new Employee(1,"xin", "xin@163.com", "1");
+			// mapper.updateEmployee(employee);
+
+			// //测试删除
+			// long a= mapper.delete(2);
+			// System.out.println(a);
+
+			// 2.手动提交
 			openSession.commit();
-		}finally {
+		} finally {
 			openSession.close();
 		}
 	}
-	
-	
+
 	@Test
 	public void test04() throws IOException {
 		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
-		//1.获取到的sqlsession不会自动提交数据
+		// 1.获取到的sqlsession不会自动提交数据
 		SqlSession openSession = sqlSessionFactory.openSession();
 		try {
 			EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
-			//Employee employee = mapper.getEmpByIdAndLastName(1, "chen");
-			Map<String,Object> map = new HashMap();
-			map.put("id", 1);
-			map.put("lastName", "chen");
-			map.put("tableName", "tbl_employee");
-			Employee employee = mapper.getEmpByMap(map);
-			System.out.println(employee);
-		}finally {
+			// Employee employee = mapper.getEmpByIdAndLastName(1, "chen");
+			/*
+			 * Map<String,Object> map = new HashMap(); map.put("id", 1);
+			 * map.put("lastName", "chen"); map.put("tableName",
+			 * "tbl_employee"); Employee employee = mapper.getEmpByMap(map);
+			 */
+
+			List<Employee> employees = mapper.getEmpsByLastNameLike("%c%");
+			for (Employee employee : employees) {
+				System.out.println(employee);
+			}
+		} finally {
 			openSession.close();
 		}
 	}
-	
 
 }
