@@ -162,8 +162,11 @@ public class MyBatisTest {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			EmployeeMapperPlus mapper = session.getMapper(EmployeeMapperPlus.class);
-			Employee employee = mapper.getEmpById(1);
+//			Employee employee = mapper.getEmpById(1);
+//			System.out.println(employee);
+			Employee employee = mapper.getEmpAndDept(1);
 			System.out.println(employee);
+			System.out.println(employee.getDept());
 		} finally {
 			session.close();
 		}
