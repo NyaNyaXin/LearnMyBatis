@@ -75,4 +75,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 	from tbl_employee e,tbl_dept d
 	 	where e.d_id = d.id and e.id=#{id}
 	 </select>
+	 
+	 <!-- 
+	 	使用association进行分部查询
+	 	1.先按照员工的id查询员工信息
+	 	2.根据查询员工信息中的d_id值去部门表中查出部门信息
+	 	3.部门设置到员工中
+	  -->
+	  <resultMap type="com.cx.mybatis.bean.Employee" id="MyEmpByStep">
+	  	<id column="id" property="id"/>
+	  	<result column="last_name" property="lastName"/>
+	  	<result column="email" property="email"/>
+	  	<result column="gender" property="gender"/>
+	  	<!-- association定义关联对象的封装规则
+	  		select:表明当前属性是调用select指定的方法查询出的结果
+	  		column：指定将那一列的值传给这个方法
+	  		
+	  		流程：使用select指定的方法传入column指定的这个列的参数的值，查出对象，并封装给property指定的属性
+	  	 -->
+	  	<association property="dept" select="com.cx.mybatis.dao.DepartmentMapper.getDeptById" column="d_id">
+	  		
+	  	</association>
+	  </resultMap>
+	  <select id="getEmpByIdStep" resultMap="MyEmpByStep">
+	  	select * from tbl_employee where id=#{id}
+	  </select>
 </mapper>
