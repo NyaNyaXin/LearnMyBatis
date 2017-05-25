@@ -114,5 +114,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	   <!-- 
 	   		场景二：查询部门的时候将部门对应的所有员工信息也查询出来
 	    -->
+	    
+	    <select id="getEmpsByDeptId" resultType="com.cx.mybatis.bean.Employee">
+	    	select * from tbl_employee where d_id = #{deptId}
+	    </select>
 	   
 </mapper>

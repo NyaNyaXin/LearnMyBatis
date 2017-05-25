@@ -182,8 +182,9 @@ public class MyBatisTest {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			DepartmentMapper mapper = session.getMapper(DepartmentMapper.class);
-			Department department = mapper.getDeptByIdPlus(1);
-			System.out.println(department);
+//			Department department = mapper.getDeptByIdPlus(1);
+			Department department = mapper.getDeptByIdStep(1);
+			System.out.println(department.getDepartmentName());
 			System.out.println(department.getEmployees());
 			
 		} finally {

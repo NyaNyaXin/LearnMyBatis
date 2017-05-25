@@ -31,4 +31,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 left join tbl_employee e on d.id = e.d_id
 		 where d.id = #{id}
 	</select>
+	
+	<resultMap type="com.cx.mybatis.bean.Department" id="myDeptStep">
+		<id column="id" property="id"/>
+		<result column="dept_name" property="departmentName"/>
+		<collection property="employees" select="com.cx.mybatis.dao.EmployeeMapperPlus.getEmpsByDeptId" column="id">
+			
+		</collection>
+	</resultMap>
+	<select id="getDeptByIdStep" resultMap="myDeptStep">
+		select id,dept_name departmentName from tbl_dept where id=#{id}
+	</select>
 </mapper>
