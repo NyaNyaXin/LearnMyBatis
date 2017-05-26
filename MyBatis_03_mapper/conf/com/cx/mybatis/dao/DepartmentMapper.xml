@@ -35,11 +35,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<resultMap type="com.cx.mybatis.bean.Department" id="myDeptStep">
 		<id column="id" property="id"/>
 		<result column="dept_name" property="departmentName"/>
-		<collection property="employees" select="com.cx.mybatis.dao.EmployeeMapperPlus.getEmpsByDeptId" column="id">
+		<collection property="employees" select="com.cx.mybatis.dao.EmployeeMapperPlus.getEmpsByDeptId" 
+			column="{deptId=id}" fetchType="lazy">
 			
 		</collection>
 	</resultMap>
 	<select id="getDeptByIdStep" resultMap="myDeptStep">
 		select id,dept_name departmentName from tbl_dept where id=#{id}
 	</select>
+	
+	<!-- 
+		扩展：将多列的值传递过去
+		将多列的值封装map传递
+		column="{key1=column1,key2=column2}"
+		fetchType="lazy"：表示使用延迟加载
+			lazy表示延迟加载
+			eager：立即加载
+	 -->
 </mapper>
