@@ -168,10 +168,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	   </insert>
 	  
 	  
+	  <!-- 两个内置参数
+	  	不只是方法传递过来的参数可以被用来判断，取值
+	  	mybatis默认还有两个内置参数
+	  	_parameter:代表整个参数
+	  		单个参数：_parameter就是这个参数
+	  		多个参数：参数会被封装为一个map，这时_parameter就代表这个map
+	  	_databaseId：如果配置了databaseIdProvider标签
+	  		_databaseId就是代表当前数据库的别名
+	   -->
 	  
 	  
-	  
-	  
+	  <select id="getEmpsTestInnerPatameters" resultType="com.cx.mybatis.bean.Employee">
+	  <if test="_databaseId=='mysql'">
+	  	select * from tbl_employee 
+	  	<if test="_parameter!=null">
+	  		where id=#{id}
+	  	</if>
+	  </if>
+	  	
+	  </select>
 	  
 	  
 	  

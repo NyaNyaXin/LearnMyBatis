@@ -36,8 +36,7 @@ public class MyBatisTest {
 	/**
 	 * 1.根据xml配置文件(全局配置文件)创建一个SqlSessionFactory对象 有数据源一些运行环境的信息
 	 * 2.sql映射文件：配置了每一个sql，以及sql的封装规则等。 3.将sql映射文件注册在全局配置文件中 4.写代码
-	 * 1).通过全局配置文件得到SqlSessionFactory
-	 * 2).使用sqlSession工厂，获取到SqlSession对象，使用他来进行增删改查
+	 * 1).通过全局配置文件得到SqlSessionFactory 2).使用sqlSession工厂，获取到SqlSession对象，使用他来进行增删改查
 	 * 一个sqlsession就是代表和数据库的一次会话，用完需要关闭
 	 * 3).使用sql唯一标识来告诉MyBatis执行哪个sql。sql都是保存在sql映射文件中的。
 	 **/
@@ -140,9 +139,9 @@ public class MyBatisTest {
 			EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
 			// Employee employee = mapper.getEmpByIdAndLastName(1, "chen");
 			/*
-			 * Map<String,Object> map = new HashMap(); map.put("id", 1);
-			 * map.put("lastName", "chen"); map.put("tableName",
-			 * "tbl_employee"); Employee employee = mapper.getEmpByMap(map);
+			 * Map<String,Object> map = new HashMap(); map.put("id", 1); map.put("lastName",
+			 * "chen"); map.put("tableName", "tbl_employee"); Employee employee =
+			 * mapper.getEmpByMap(map);
 			 */
 
 			// List<Employee> employees = mapper.getEmpsByLastNameLike("%c%");
@@ -167,11 +166,12 @@ public class MyBatisTest {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			EmployeeMapperPlus mapper = session.getMapper(EmployeeMapperPlus.class);
-//			Employee employee = mapper.getEmpById(1);
-//			System.out.println(employee);
-			/*Employee employee = mapper.getEmpAndDept(1);
-			System.out.println(employee);
-			System.out.println(employee.getDept());*/
+			// Employee employee = mapper.getEmpById(1);
+			// System.out.println(employee);
+			/*
+			 * Employee employee = mapper.getEmpAndDept(1); System.out.println(employee);
+			 * System.out.println(employee.getDept());
+			 */
 			Employee employee = mapper.getEmpByIdStep(2);
 			System.out.println(employee);
 			System.out.println(employee.getDept());
@@ -179,59 +179,61 @@ public class MyBatisTest {
 			session.close();
 		}
 	}
+
 	@Test
 	public void test06() throws IOException {
 		SqlSessionFactory sessionFactory = getSqlSessionFactory();
 		SqlSession session = sessionFactory.openSession();
 		try {
 			DepartmentMapper mapper = session.getMapper(DepartmentMapper.class);
-//			Department department = mapper.getDeptByIdPlus(1);
+			// Department department = mapper.getDeptByIdPlus(1);
 			Department department = mapper.getDeptByIdStep(1);
 			System.out.println(department.getDepartmentName());
 			System.out.println(department.getEmployees());
-			
+
 		} finally {
 			session.close();
 		}
 	}
+
 	@Test
 	public void testDynamicSql() throws IOException {
 		SqlSessionFactory sessionFactory = getSqlSessionFactory();
 		SqlSession session = sessionFactory.openSession();
 		try {
 			EmployeeMapperDynamicSql mapper = session.getMapper(EmployeeMapperDynamicSql.class);
-			Employee employee = new Employee(1, "xin",null, null);
-			//测试if where
-//			List<Employee> emps = mapper.getEmpsByConIf(employee);
-//			for(Employee emp:emps) {
-//				System.out.println(emp);
-//			}
-			//查询的时候如果某些条件没带可能sql拼装会有问题
-			//1.where后面加上1=1，以后都用and或or
-			//2.mybatis使用where标签把所有的查询条件包含在内mybatis会将where标签中多出来的and或者or去掉
-				//只能去掉前面的一个and或or
-			
-			//测试trim
-//			List<Employee> emps = mapper.getEmpsByConTrim(employee);
-//			for(Employee emp:emps) {
-//				System.out.println(emp);
-//			}
-			//测试choose
-//			List<Employee> emps = mapper.getEmpBysConChoose(employee);
-//			for(Employee emp:emps) {
-//				System.out.println(emp);
-//			}
-//			mapper.updateEmp(employee);
-//			session.commit();
-			List<Employee> emps = mapper.getEmpsByConditionForeach(Arrays.asList(1,2));
-			for(Employee emp:emps) {
+			Employee employee = new Employee(1, "xin", null, null);
+			// 测试if where
+			// List<Employee> emps = mapper.getEmpsByConIf(employee);
+			// for(Employee emp:emps) {
+			// System.out.println(emp);
+			// }
+			// 查询的时候如果某些条件没带可能sql拼装会有问题
+			// 1.where后面加上1=1，以后都用and或or
+			// 2.mybatis使用where标签把所有的查询条件包含在内mybatis会将where标签中多出来的and或者or去掉
+			// 只能去掉前面的一个and或or
+
+			// 测试trim
+			// List<Employee> emps = mapper.getEmpsByConTrim(employee);
+			// for(Employee emp:emps) {
+			// System.out.println(emp);
+			// }
+			// 测试choose
+			// List<Employee> emps = mapper.getEmpBysConChoose(employee);
+			// for(Employee emp:emps) {
+			// System.out.println(emp);
+			// }
+			// mapper.updateEmp(employee);
+			// session.commit();
+			List<Employee> emps = mapper.getEmpsByConditionForeach(Arrays.asList(1, 2));
+			for (Employee emp : emps) {
 				System.out.println(emp);
 			}
 		} finally {
 			session.close();
 		}
 	}
-	
+
 	@Test
 	public void testAddEmps() throws IOException {
 		SqlSessionFactory sessionFactory = getSqlSessionFactory();
@@ -239,10 +241,26 @@ public class MyBatisTest {
 		try {
 			EmployeeMapperDynamicSql mapper = session.getMapper(EmployeeMapperDynamicSql.class);
 			List<Employee> employees = new ArrayList<>();
-			employees.add(new Employee(null, "ding", "ding@qq.com", "1",new Department(1)));
-			employees.add(new Employee(null, "jian", "jian@qq.com", "1",new Department(2)));
+			employees.add(new Employee(null, "ding", "ding@qq.com", "1", new Department(1)));
+			employees.add(new Employee(null, "jian", "jian@qq.com", "1", new Department(2)));
 			mapper.addEmps(employees);
 			session.commit();
+		} finally {
+			session.close();
+		}
+	}
+
+	@Test
+	public void testInnerPrama() throws IOException {
+
+		SqlSessionFactory sessionFactory = getSqlSessionFactory();
+		SqlSession session = sessionFactory.openSession();
+		try {
+			EmployeeMapperDynamicSql mapper = session.getMapper(EmployeeMapperDynamicSql.class);
+			List<Employee> list = mapper.getEmpsTestInnerPatameters(new Employee(1, null, null, null));
+			for (Employee emp : list) {
+				System.out.println(emp);
+			}
 		} finally {
 			session.close();
 		}
