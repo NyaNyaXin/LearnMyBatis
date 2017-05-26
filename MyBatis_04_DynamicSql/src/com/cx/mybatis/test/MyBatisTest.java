@@ -198,11 +198,15 @@ public class MyBatisTest {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			EmployeeMapperDynamicSql mapper = session.getMapper(EmployeeMapperDynamicSql.class);
-			Employee employee = new Employee(1, "%c%",null, null);
+			Employee employee = new Employee(null, "%c%",null, null);
 			List<Employee> emps = mapper.getEmpsByConIf(employee);
 			for(Employee emp:emps) {
 				System.out.println(emp);
 			}
+			//查询的时候如果某些条件没带可能sql拼装会有问题
+			//1.where后面加上1=1，以后都用and或or
+			//2.mybatis使用where标签把所有的查询条件包含在内mybatis会将where标签中多出来的and或者or去掉
+				//只能去掉前面的一个and或or
 		} finally {
 			session.close();
 		}
