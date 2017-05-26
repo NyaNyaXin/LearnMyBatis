@@ -2,6 +2,7 @@ package com.cx.mybatis.test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -219,8 +220,12 @@ public class MyBatisTest {
 //			for(Employee emp:emps) {
 //				System.out.println(emp);
 //			}
-			mapper.updateEmp(employee);
-			session.commit();
+//			mapper.updateEmp(employee);
+//			session.commit();
+			List<Employee> emps = mapper.getEmpsByConditionForeach(Arrays.asList(1,2));
+			for(Employee emp:emps) {
+				System.out.println(emp);
+			}
 		} finally {
 			session.close();
 		}
