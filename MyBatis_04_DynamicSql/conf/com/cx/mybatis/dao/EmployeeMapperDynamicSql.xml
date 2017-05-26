@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		if 判断
 		choose (when, otherwise) 分支选择 java中的switch case
 			如果带了id就用id查，如果带了lastName就用lastName查;只会进入其中一个分支
-		trim 字符串截取(where, set)
+		trim 字符串截取(where[封装查询条件], set[封装修改条件])
 		foreach
 	 -->
 	 <!-- 
@@ -93,6 +93,55 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	  		</choose>
 	  	</where>
 	  </select>
+	  
+	  <update id="updateEmp">
+	  <!-- Set标签使用 推荐 -->
+	  	
+	  	update tbl_employee
+	  	<set>
+	  	<if test="lastName!=null">
+	  		last_name=#{lastName},
+	  	</if>
+	  	<if test="email!=null">
+	  		email=#{email},
+	  	</if>
+	  	<if test="gender!=null">
+	  		gender=#{gender}
+	  	</if>
+	  	</set>
+	  	where id=#{id}
+	  	
+	  	 <!-- trim标签更新
+	  	 update tbl_employee
+	  	<trim prefix="set" suffixOverrides=",">
+	  	<if test="lastName!=null">
+	  		last_name=#{lastName},
+	  	</if>
+	  	<if test="email!=null">
+	  		email=#{email},
+	  	</if>
+	  	<if test="gender!=null">
+	  		gender=#{gender}
+	  	</if>
+	  	</trim>
+	  	where id=#{id}
+	  	 -->
+	  	
+	  </update>
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
 	  
 	  
 	  

@@ -198,7 +198,7 @@ public class MyBatisTest {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			EmployeeMapperDynamicSql mapper = session.getMapper(EmployeeMapperDynamicSql.class);
-			Employee employee = new Employee(null, null,null, null);
+			Employee employee = new Employee(1, "xin",null, null);
 			//测试if where
 //			List<Employee> emps = mapper.getEmpsByConIf(employee);
 //			for(Employee emp:emps) {
@@ -215,10 +215,12 @@ public class MyBatisTest {
 //				System.out.println(emp);
 //			}
 			//测试choose
-			List<Employee> emps = mapper.getEmpBysConChoose(employee);
-			for(Employee emp:emps) {
-				System.out.println(emp);
-			}
+//			List<Employee> emps = mapper.getEmpBysConChoose(employee);
+//			for(Employee emp:emps) {
+//				System.out.println(emp);
+//			}
+			mapper.updateEmp(employee);
+			session.commit();
 		} finally {
 			session.close();
 		}

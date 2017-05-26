@@ -12,4 +12,5 @@ public interface EmployeeMapperDynamicSql {
 	
 	public List<Employee> getEmpBysConChoose(Employee employee);
 
+	public void updateEmp(Employee employee);
 }
