@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cx.mybatis.dao.EmployeeMapperDynamicSql">
+	<!-- 
+		if
+		choose (when, otherwise)
+		trim (where, set)
+		foreach
+	 -->
+	 <!-- 
+	 	查询员工：要求，携带了那个字段的查询条件就带上这个字段的值
+	  -->
+	  <!-- 
+	  
+	   -->
+	  <select id="getEmpsByConIf" resultType="com.cx.mybatis.bean.Employee">
+	  	select * from tbl_employee
+	  	where 
+	  	<!-- test=""判断表达式 (OGNL表达式)
+	  		从参数中取值进行判断
+	  		遇见特殊符号应该去写转义字符
+	  		&&也是特殊字符
+	  	-->
+	  	<if test="id!=null">
+	  		id=#{id}
+	  	</if>
+	  	<if test="lastName != null and lastName == ''">
+	  		and last_name like #{lastName}
+	  	</if>
+	  	<if test="email!=null and email.trim()!=''">
+	  		and email=#{email}
+	  	</if>
+	  	<!-- ognl会进行字符串与数字的转换判断 -->
+	  	<if test="gender==0 or gender==1">
+	  		and gender =#{gender}
+	  	</if>
+	  </select>
+</mapper>
