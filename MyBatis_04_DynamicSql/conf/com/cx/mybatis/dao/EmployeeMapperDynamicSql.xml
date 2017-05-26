@@ -149,6 +149,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	  	</foreach>
 	  </select>
 	  
+	  <!-- 批量保存 -->
+	  <!-- MySql下批量保存：可以forEach遍历，支持values(),(),() -->
+	  <!-- <insert id="addEmps">
+	  	insert into tbl_employee(last_name,email,gender,d_id)
+	  	values
+	  	<foreach collection="emps" item="emp" separator=",">
+	  		(#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id})
+	  	</foreach>
+	  </insert>
+	   -->
+	   <!-- 需要数据库连接属性allowMultiQueries=true支持 -->
+	   <insert id="addEmps">
+	   <foreach collection="emps" item="emp" separator=";">
+	   		insert into tbl_employee(last_name,email,gender,d_id)
+	   		values(#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id})
+	   </foreach>
+	   </insert>
 	  
 	  
 	  

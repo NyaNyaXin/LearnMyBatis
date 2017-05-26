@@ -2,6 +2,7 @@ package com.cx.mybatis.test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -226,6 +227,22 @@ public class MyBatisTest {
 			for(Employee emp:emps) {
 				System.out.println(emp);
 			}
+		} finally {
+			session.close();
+		}
+	}
+	
+	@Test
+	public void testAddEmps() throws IOException {
+		SqlSessionFactory sessionFactory = getSqlSessionFactory();
+		SqlSession session = sessionFactory.openSession();
+		try {
+			EmployeeMapperDynamicSql mapper = session.getMapper(EmployeeMapperDynamicSql.class);
+			List<Employee> employees = new ArrayList<>();
+			employees.add(new Employee(null, "ding", "ding@qq.com", "1",new Department(1)));
+			employees.add(new Employee(null, "jian", "jian@qq.com", "1",new Department(2)));
+			mapper.addEmps(employees);
+			session.commit();
 		} finally {
 			session.close();
 		}
