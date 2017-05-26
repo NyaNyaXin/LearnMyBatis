@@ -4,9 +4,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cx.mybatis.dao.EmployeeMapperDynamicSql">
 	<!-- 
-		if
-		choose (when, otherwise)
-		trim (where, set)
+		if 判断
+		choose (when, otherwise) 分支选择 java中的switch case
+			如果带了id就用id查，如果带了lastName就用lastName查;只会进入其中一个分支
+		trim 字符串截取(where, set)
 		foreach
 	 -->
 	 <!-- 
@@ -72,4 +73,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  	</if>
 	  	</trim>
 	  </select>
+	  
+	  <select id="getEmpBysConChoose" resultType="com.cx.mybatis.bean.Employee">
+	  	select * from tbl_employee
+	  	<where>
+	  		<choose>
+	  			<when test="id!=null">
+	  				id=#{id}
+	  			</when>
+	  			<when test="lastName!=null">
+	  				last_name=#{lastName}
+	  			</when>
+	  			<when test="email!=null">
+	  				email=#{email}
+	  			</when>
+	  			<otherwise>
+	  				1=1
+	  			</otherwise>
+	  		</choose>
+	  	</where>
+	  </select>
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
 </mapper>

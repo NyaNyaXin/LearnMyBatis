@@ -9,5 +9,7 @@ public interface EmployeeMapperDynamicSql {
 	public List<Employee> getEmpsByConIf(Employee employee);
 	
 	public List<Employee> getEmpsByConTrim(Employee employee);
+	
+	public List<Employee> getEmpBysConChoose(Employee employee);
 
 }

@@ -198,7 +198,7 @@ public class MyBatisTest {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			EmployeeMapperDynamicSql mapper = session.getMapper(EmployeeMapperDynamicSql.class);
-			Employee employee = new Employee(null, "%c%",null, null);
+			Employee employee = new Employee(null, null,null, null);
 			//测试if where
 //			List<Employee> emps = mapper.getEmpsByConIf(employee);
 //			for(Employee emp:emps) {
@@ -210,7 +210,12 @@ public class MyBatisTest {
 				//只能去掉前面的一个and或or
 			
 			//测试trim
-			List<Employee> emps = mapper.getEmpsByConTrim(employee);
+//			List<Employee> emps = mapper.getEmpsByConTrim(employee);
+//			for(Employee emp:emps) {
+//				System.out.println(emp);
+//			}
+			//测试choose
+			List<Employee> emps = mapper.getEmpBysConChoose(employee);
 			for(Employee emp:emps) {
 				System.out.println(emp);
 			}
