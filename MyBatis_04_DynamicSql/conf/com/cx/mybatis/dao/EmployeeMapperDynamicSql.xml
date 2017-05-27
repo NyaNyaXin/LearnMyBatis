@@ -162,7 +162,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	   <!-- 需要数据库连接属性allowMultiQueries=true支持 -->
 	   <insert id="addEmps">
 	   <foreach collection="emps" item="emp" separator=";">
-	   		insert into tbl_employee(last_name,email,gender,d_id)
+	   		insert into tbl_employee(
+	   		<include refid="aa">
+	   			<property name="" value=""/>
+	   		</include>
+	   		
+	   		)
 	   		values(#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id})
 	   </foreach>
 	   </insert>
@@ -192,7 +197,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	  </select>
 	  
 	  
-	  
+	  <!-- 抽取可重用的sql片段。方便后面引用 
+	  	1.sql抽取：经常将要查询的列名，或者插入用的列名抽取出来方便引用
+	  	2.include来引用已经抽取的sql
+	  	3.include还可以自定义一些property，sql内部就能使用自定义的属性
+	  		${prop}取值的正确方式
+	  -->
+	  <sql id="aa">
+	  	last_name,email,gender,d_id
+	  </sql>
 	  
 	  
 	  
