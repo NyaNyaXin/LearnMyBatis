@@ -257,7 +257,7 @@ public class MyBatisTest {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			EmployeeMapperDynamicSql mapper = session.getMapper(EmployeeMapperDynamicSql.class);
-			List<Employee> list = mapper.getEmpsTestInnerPatameters(new Employee(1, null, null, null));
+			List<Employee> list = mapper.getEmpsTestInnerPatameters(new Employee(null, "%c%", null, null));
 			for (Employee emp : list) {
 				System.out.println(emp);
 			}
