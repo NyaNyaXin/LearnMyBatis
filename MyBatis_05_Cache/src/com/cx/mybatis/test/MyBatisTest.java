@@ -31,9 +31,49 @@ public class MyBatisTest {
 	 * 	2.sqlSession相同，查询条件不同(当前一级缓存中还没有这个数据)
 	 * 	3.SQLSession相同，两次查询之间执行了增删改操作(这次增删改可能对当前数据有影响)
 	 * 	4.SQLSession相同，手动清除了一级缓存中的数据
-	 * 二级缓存：(全局缓存)
+	 * 二级缓存：(全局缓存)：基于namespace级别的缓存，一个namespace可以对应一个二级缓存
+	 * 	工作机制：
+	 * 	1.一个会话查询一条数据，这个数据会被放在当前会话的一级缓存中；
+	 * 	2.如果会话关闭；一级缓存中的数据会被保存到二级缓存中；新的会话查询信息，就可以参照二级缓存中的内容
+	 * 	3.sqlSession===EmployeeMapper====Employee
+	 * 	  			   DepartmentMapper===Department
+	 * 		不同namespace查出的数据会放入自己对应的缓存中(map)
+	 * 		效果：数据会从二级缓存中获取
+	 * 		查出的数据都会被默认放在一级缓存中。
+	 * 		只有会话关闭后，一级缓存中的数据才会转移到二级缓存
+	 * 
+	 * 	使用步骤：
+	 * 	1.开启全局二级缓存配置：<setting name="cacheEnable" value="true"/>
+	 * 	2.去mapper.xml中配置使用二级缓存：<cache></cache>
+	 * 	3.POJO需要实现序列化接口
 	 * @throws IOException 
+	 * 
+	 * 
 	 */
+	/**
+	 * @throws IOException
+	 */
+	@Test
+	public void testSecondLevelCache() throws IOException {
+		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+		SqlSession session = sqlSessionFactory.openSession();
+		SqlSession session2 = sqlSessionFactory.openSession();
+		try {
+			EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
+			EmployeeMapper mapper2 = session2.getMapper(EmployeeMapper.class);
+			Employee employee = mapper.getEmpById(1);
+			System.out.println(employee);
+			
+			//第二次查询是从二级缓存中拿到的，并没有发送新的sql
+			Employee employee2 = mapper2.getEmpById(1);
+			System.out.println(employee2);
+			session.close();
+			session2.close();
+		} finally {
+			session.close();
+			session2.close();
+		}
+	}
 	@Test
 	public void testFristLevelCache() throws IOException {
 		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();

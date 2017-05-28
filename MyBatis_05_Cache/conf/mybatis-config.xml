@@ -15,6 +15,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		 -->
 		<setting name="lazyLoadingEnabled" value="true"/>
 		<setting name="aggressiveLazyLoading" value="false"/>
+		<!-- 显示的配置全局二级缓存 -->
+		<setting name="cacheEnabled" value="true"/>
 	</settings>
 
 	<!-- 3.typeAliases:别名处理器，可以为java类型起别名，别名不区分大小写 typeAlias：为某个java类型起别名 type：要起别名的类型的全类名;默认别名就是类名小写;employee 
