@@ -43,9 +43,19 @@ public class MyBatisTest {
 	 * 		只有会话关闭后，一级缓存中的数据才会转移到二级缓存
 	 * 
 	 * 	使用步骤：
-	 * 	1.开启全局二级缓存配置：<setting name="cacheEnable" value="true"/>
+	 * 	1.开启全局二级缓存配置：<setting name="cacheEnabled" value="true"/>
 	 * 	2.去mapper.xml中配置使用二级缓存：<cache></cache>
 	 * 	3.POJO需要实现序列化接口
+	 * 
+	 * 	和缓存有关的设置/属性
+	 * 		1.cacheEnabled=true:false:关闭二级缓存,一级缓存一直可用
+	 * 		2.每个select标签都有useCache="true"属性：
+	 * 			false：一级使用，二级不使用
+	 * 		3.每个增删改标签的flushCache="true"属性默认为true，每次增删改就会清除缓存，一级缓存有效,二级缓存也有效
+	 * 			flushCache="true在查询标签中默认为false，如果改为true，每次查询都会清除缓存；缓存是没有被使用的
+	 * 		4.sqlsession.clearCache()都是清除一级缓存
+	 * 		5.localCacheScope：本地缓存作用域：（一级缓存SESSION）：当前会话的所有数据保存在会话缓存中
+	 * 			STATEMENT：可以禁用一级缓存；
 	 * @throws IOException 
 	 * 
 	 * 
@@ -63,11 +73,13 @@ public class MyBatisTest {
 			EmployeeMapper mapper2 = session2.getMapper(EmployeeMapper.class);
 			Employee employee = mapper.getEmpById(1);
 			System.out.println(employee);
-			
+			session.close();
+			session.clearCache();
+			mapper2.addEmployee(new Employee(null, "aa", "aa.com", "1"));
 			//第二次查询是从二级缓存中拿到的，并没有发送新的sql
 			Employee employee2 = mapper2.getEmpById(1);
 			System.out.println(employee2);
-			session.close();
+			
 			session2.close();
 		} finally {
 			session.close();
@@ -93,7 +105,7 @@ public class MyBatisTest {
 //			System.out.println("数据添加");
 
 			//4.SQLSession相同，手动清除了一级缓存中的数据
-			session.clearCache();
+			//session.clearCache();
 			Employee employee2 = mapper.getEmpById(1);
 			System.out.println(employee2);
 		} finally {

@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="getEmpById" resultType="com.cx.mybatis.bean.Employee"
-		databaseId="mysql">
+		databaseId="mysql" useCache="false">
 		select id,last_name,email,gender from tbl_employee where id
 		=
 		#{idabc}
@@ -67,7 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- parameterType:可以省略 获取自增主键的值： mysql支持自增主键，自增主键值的获取，mybatis也是利用statement.getGenreatedKeys(); 
 		useGeneratedKeys:属性值设置为true,使用自增主键获取主键值策略 keyProperty：指定对应的主键属性,也就是mybatis获取到主键值以后,将这个值封装给JavaBean的哪个属性 -->
 	<insert id="addEmployee" parameterType="com.cx.mybatis.bean.Employee"
-		databaseId="mysql" useGeneratedKeys="true" keyProperty="id">
+		databaseId="mysql" useGeneratedKeys="true" keyProperty="id" flushCache="true">
 		insert into
 		tbl_employee(last_name,email,gender)
 		values(#{lastName},#{email},#{gender})
