@@ -4,8 +4,11 @@
   "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-  
-  <context id="DB2Tables" targetRuntime="MyBatis3Simple">
+  <!-- targetRuntime
+	  MyBatis3Simple:生成简单版的CRUD
+	  MyBatis3：豪华版
+   -->
+  <context id="DB2Tables" targetRuntime="MyBatis3">
   <!-- 
   	jdbcConnection：指定如何连接到目标数据库
    -->
