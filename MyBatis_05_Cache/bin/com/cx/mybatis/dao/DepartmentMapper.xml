@@ -4,6 +4,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.cx.mybatis.dao.DepartmentMapper">
+
+	<!-- 引用缓存：namespace：制定和那个名称空间下的引用 -->
+	<cache-ref namespace="com.cx.mybatis.dao.EmployeeMapper"/>
+	
+		
 	<select id="getDeptById" resultType="com.cx.mybatis.bean.Department">
 		select id,dept_name departmentName from tbl_dept where id=#{id}
 	</select>

@@ -56,6 +56,11 @@ public class MyBatisTest {
 	 * 		4.sqlsession.clearCache()都是清除一级缓存
 	 * 		5.localCacheScope：本地缓存作用域：（一级缓存SESSION）：当前会话的所有数据保存在会话缓存中
 	 * 			STATEMENT：可以禁用一级缓存；
+	 * 
+	 * 	第三方缓存整合：
+	 * 		1.导入第三方缓存包
+	 * 		2.导入与第三方缓存整合的适配包
+	 * 		3.在mapper.xml中使用自定义缓存
 	 * @throws IOException 
 	 * 
 	 * 

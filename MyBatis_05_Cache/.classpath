@@ -5,6 +5,10 @@
 	<classpathentry kind="lib" path="libs/log4j.jar"/>
 	<classpathentry kind="lib" path="libs/mybatis-3.4.1.jar" sourcepath="F:/Framework/J2EEFramework/MyBatis/Jar包/mybatis-3-mybatis-3.4.1.zip"/>
 	<classpathentry kind="lib" path="libs/mysql-connector-java-5.1.41-bin.jar"/>
+	<classpathentry kind="lib" path="libs/ehcache-core-2.6.8.jar"/>
+	<classpathentry kind="lib" path="libs/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="libs/slf4j-log4j12-1.6.2.jar"/>
+	<classpathentry kind="lib" path="libs/mybatis-ehcache-1.0.3.jar"/>
 	<classpathentry kind="src" path="conf"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>

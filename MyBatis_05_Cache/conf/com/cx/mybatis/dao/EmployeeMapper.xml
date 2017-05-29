@@ -22,7 +22,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		type:自定义缓存的全类名
 			实现Cache接口即可
 	 -->
-	<cache eviction="FIFO" flushInterval="60000" readOnly="false" size="1024"></cache>
+	<!-- <cache eviction="FIFO" flushInterval="60000" readOnly="false" size="1024"></cache> -->
+	
+	<!-- 高级二级缓存 -->
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
 
 	<!-- public Map<Integer, Employee> getEmpByLastNameLikeReturnMap(String lastName); -->
 	<select id="getEmpByLastNameLikeReturnMap" resultType="com.cx.mybatis.bean.Employee">
@@ -59,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="getEmpById" resultType="com.cx.mybatis.bean.Employee"
-		databaseId="mysql" useCache="false">
+		databaseId="mysql" useCache="true">
 		select id,last_name,email,gender from tbl_employee where id
 		=
 		#{idabc}
