@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -34,6 +33,13 @@ public class MyBatisTest {
     	}
     		return target;
   		}
+	 * **/
+	
+	/**
+	 * 插件编写：
+	 * 	1.编写Interceptor的实现类
+	 * 	2.使用@Intercepts注解完成插件签名
+	 * 	3.将写好的插件注册到全局配置文件中
 	 * **/
 	@Test
 	public void testPlugin() {
