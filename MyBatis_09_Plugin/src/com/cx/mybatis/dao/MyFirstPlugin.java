@@ -8,6 +8,8 @@ import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
+import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.SystemMetaObject;
 
 /**
  * 完成插件签名：
@@ -23,9 +25,22 @@ public class MyFirstPlugin implements Interceptor {
 	 * intercept：拦截目标对象的目标方法的执行
 	 * **/
 	public Object intercept(Invocation invocation) throws Throwable {
+		System.out.println("MyFirstPlugin....intercept.....:"+invocation.getMethod());
+		
+		Object object = invocation.getTarget();
+		
+		//动态的改变sql运行的参数：以前是查询1号，实际上是查询2号
+		System.out.println("当前拦截到的对象："+invocation.getTarget());
+		//得到StatementHandler里面的ParameterHandler里面的parameterObject
+		//拿到target的元数据
+		MetaObject metaObject = SystemMetaObject.forObject(object);
+		Object value = metaObject.getValue("parameterHandler.parameterObject");
+		System.out.println("sql语句用的参数是："+value);
+		//修改sql语句要用到的参数
+		metaObject.setValue("parameterHandler.parameterObject", 10);
 		//执行目标方法
 		Object proceed = invocation.proceed();
-		System.out.println("MyFirstPlugin....intercept.....:"+invocation.getMethod());
+		
 		//返回执行后的返回值
 		return proceed;
 	}
