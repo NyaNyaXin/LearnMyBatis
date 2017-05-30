@@ -3,8 +3,10 @@ package com.cx.mybatis.test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -99,4 +101,26 @@ public class MyBatisTest {
 		
 	}
 
+	@Test
+	public void testBatch() throws IOException {
+		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+		//可以执行批量操作的SqlSession
+		SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH);
+		long start = System.currentTimeMillis();
+		try {
+			EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
+			for(int i=0;i<10000;i++) {
+				mapper.addEmployee(new Employee(UUID.randomUUID().toString().substring(0, 5), "aa"+i, "1"));
+			}
+			
+			session.commit();
+			//批量执行省时间：预编译sql一次，设置参数多次
+			//非批量费时间：预编译，设置参数，执行sql都需要重复多次
+			long end = System.currentTimeMillis();
+			System.out.println("执行时长："+(end-start));
+		} finally {
+			session.close();
+		}
+		
+	}
 }

@@ -19,4 +19,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getEmps" resultType="com.cx.mybatis.bean.Employee">
 		select id,last_name lastName,email,gender from tbl_employee
 	</select>
+	
+	<insert id="addEmployee" >
+		insert into
+		tbl_employee(last_name,email,gender)
+		values(#{lastName},#{email},#{gender})
+	</insert>
 </mapper>
