@@ -7,7 +7,15 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	
 	
 	<typeHandlers>
-		<typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="com.cx.mybatis.bean.EmpStatus"/>
+		<!-- 1.配置自定义的类型处理器 -->
+		<typeHandler handler="com.cx.mybatis.typehandler.MyEnumEmpStatusTypeHandler" javaType="com.cx.mybatis.bean.EmpStatus"/>
+		<!-- 2.也可以在处理某个字段的时候告诉MyBatis使用什么类型处理器 #{empStatus,typeHandler=xxx}
+			<resultMap type="com.cx.mybatis.bean.Employee" id="MyEmp">
+				<id column="id" property="id"/>
+				<result column="empStatus" property="empStatus" typeHandler="xxx"/>
+			</resultMap>
+			注意：如果在参数位置修改typeHandler，应该保证保存数据和查询数据的TypeHandler是一样的
+		-->
 	</typeHandlers>
 	
 	<plugins>
