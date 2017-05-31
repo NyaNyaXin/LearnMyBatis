@@ -12,6 +12,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 
+import com.cx.mybatis.bean.EmpStatus;
 import com.cx.mybatis.bean.Employee;
 import com.cx.mybatis.dao.EmployeeMapper;
 import com.github.pagehelper.Page;
@@ -122,5 +123,31 @@ public class MyBatisTest {
 			session.close();
 		}
 		
+	}
+	@Test
+	public void testEnumUse() {
+		EmpStatus login = EmpStatus.LOGOUT;
+		System.out.println("枚举的索引"+login.ordinal());
+		System.out.println("枚举的名字"+login.name());
+	}
+	
+	/**
+	 * Mybatis默认在处理枚举对象的时候保存的是枚举的名字：EnumTypeHandler
+	 * 改变使用另外一种：EnumOrdinalTypeHandler
+	 * **/
+	@Test
+	public void testEnum() throws IOException {
+		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
+			Employee employee = new Employee("AAA", "AAAAA", "0");
+			
+			mapper.addEmployee(employee);
+			session.commit();
+			System.out.println("保存成功"+employee.getId());
+		} finally {
+			session.close();
+		}
 	}
 }

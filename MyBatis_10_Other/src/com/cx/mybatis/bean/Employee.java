@@ -5,6 +5,8 @@ public class Employee {
 	private String lastName;
 	private String email;
 	private String gender;
+	//員工狀態
+	private EmpStatus empStatus = EmpStatus.LOGOUT;
 	
 	
 
@@ -13,6 +15,18 @@ public class Employee {
 	}
 	
 	
+
+	public EmpStatus getEmpStatus() {
+		return empStatus;
+	}
+
+
+
+	public void setEmpStatus(EmpStatus empStatus) {
+		this.empStatus = empStatus;
+	}
+
+
 
 	public Employee(String lastName, String email, String gender) {
 		super();

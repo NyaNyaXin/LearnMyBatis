@@ -20,9 +20,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select id,last_name lastName,email,gender from tbl_employee
 	</select>
 	
-	<insert id="addEmployee" >
+	<insert id="addEmployee" useGeneratedKeys="true" keyProperty="id">
 		insert into
-		tbl_employee(last_name,email,gender)
-		values(#{lastName},#{email},#{gender})
+		tbl_employee(last_name,email,gender,empStatus)
+		values(#{lastName},#{email},#{gender},#{empStatus})
 	</insert>
+	
+	
+	<!-- 使用select标签定义调用存储过程 
+		CALLABLE：表示要调用存储过程
+		call procedureName
+	-->
+	
+	<!-- <select id="***" statementType="CALLABLE">
+		{call procedureName(
+			#{param1,mode=IN,jdbcType=Integer}
+			#{param2,mode=IN,jdbcType=Integer}
+			......
+			#{param3,mode=OUT,jdbcType=Integer}
+			#{param4,mode=OUT,jdbcType=CURSOR,javaType=ResultSet,resultMap=***}
+		)}
+	</select> -->
 </mapper>
