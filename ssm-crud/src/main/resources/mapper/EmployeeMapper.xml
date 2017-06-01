@@ -8,6 +8,19 @@
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="d_id" jdbcType="INTEGER" property="dId" />
   </resultMap>
+
+  <resultMap type="com.cx.crud.bean.Employee" id="WithDept">
+  	<id column="emp_id" jdbcType="INTEGER" property="empId" />
+    <result column="emp_name" jdbcType="VARCHAR" property="empName" />
+    <result column="gender" jdbcType="CHAR" property="gender" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="d_id" jdbcType="INTEGER" property="dId" />
+    <!-- 指定联合查询出的部门字段的封装 -->
+    <association property="department" javaType="com.cx.crud.bean.Department">
+    	<id column="dept_id" property="deptId"/>
+    	<result column="dept_name" property="deptName"/>
+    </association>
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -68,6 +81,9 @@
   </sql>
   <sql id="Base_Column_List">
     emp_id, emp_name, gender, email, d_id
+  </sql>
+  <sql id="Withdept_Column_List">
+  	e.emp_id, e.emp_name, e.gender, e.email, e.d_id,d.dept_id,d.dept_name
   </sql>
   <select id="selectByExample" parameterType="com.cx.crud.bean.EmployeeExample" resultMap="BaseResultMap">
     select
@@ -208,4 +224,32 @@
       d_id = #{dId,jdbcType=INTEGER}
     where emp_id = #{empId,jdbcType=INTEGER}
   </update>
+
+ <!--    List<Employee> selectByExampleWithDept(EmployeeExample example);
+    Employee selectByPrimaryKeyWithDept(Integer empId); -->
+<!-- 查询员工同时带部门信息 -->
+	<select id="selectByExampleWithDept" resultMap="WithDept">
+		 select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Withdept_Column_List" />
+    FROM tbl_emp e
+	LEFT JOIN tbl_dept d
+	ON e.`d_id`=d.`dept_id`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+	</select>
+	<select id="selectByPrimaryKeyWithDept" resultMap="WithDept">
+		 select 
+	    <include refid="Withdept_Column_List" />
+	    FROM tbl_emp e
+		LEFT JOIN tbl_dept d
+		ON e.`d_id`=d.`dept_id`
+	    where emp_id = #{empId,jdbcType=INTEGER}
+	</select>
 </mapper>

@@ -10,8 +10,21 @@ public class Employee {
     private String email;
 
     private Integer dId;
+    
+    //希望查詢員工同時查詢部門信息
+    private Department department;
+    
+    
 
-    public Integer getEmpId() {
+    public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public Integer getEmpId() {
         return empId;
     }
 
