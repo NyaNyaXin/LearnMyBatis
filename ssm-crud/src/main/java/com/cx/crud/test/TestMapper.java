@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * 3.直接autowired要使用的组件即可
  * **/
 
-import com.cx.crud.bean.Department;
 import com.cx.crud.bean.Employee;
 import com.cx.crud.dao.DepartmentMapper;
 import com.cx.crud.dao.EmployeeMapper;
