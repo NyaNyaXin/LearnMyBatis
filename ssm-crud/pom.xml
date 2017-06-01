@@ -105,7 +105,12 @@
 		    <version>1.3.5</version>
 		</dependency>
 		
-		
+		<!-- 引入pageHelper -->
+		<dependency>
+		    <groupId>com.github.pagehelper</groupId>
+		    <artifactId>pagehelper</artifactId>
+		    <version>5.0.0</version>
+		</dependency>
 		
 	</dependencies>
 
