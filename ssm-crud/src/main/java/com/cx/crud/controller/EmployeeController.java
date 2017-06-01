@@ -29,7 +29,7 @@ public class EmployeeController {
 		//这不是一个分页查询
 		//引入pageHelper插件
 		//在查询之前只需调用如下方法,传入页码以及每页的大小
-		PageHelper.startPage(pn, 5);
+		PageHelper.startPage(pn, 8);
 		//startPage紧跟的查询就是分页查寻
 		List<Employee> emps = employeeService.getAll();
 		//使用pageInfo包装查询之后的结果，只需要将pageInfo交给页面就行
