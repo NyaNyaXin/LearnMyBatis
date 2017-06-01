@@ -30,8 +30,17 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
-			<version>4.3.7.RELEASE</version>
+			<version>4.3.7.RELEASE</version> 
 		</dependency>
+		
+		<!-- spring单元测试模块 -->
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-test</artifactId>
+		    <version>4.3.7.RELEASE</version>
+		</dependency>
+		
 
 		<!-- mybatis -->
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
