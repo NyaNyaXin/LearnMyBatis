@@ -72,9 +72,14 @@
 	<script type="text/javascript">
 		//1.页面加载完毕以后直接发送一个Ajax请求，获取分页数据
 		$(function () {
+			//去首页
+			toPage(1);
+		});
+		
+		function toPage(pn){
 			$.ajax({
 				url:"${APP_PATH}/emps",
-				data:"pn=1",
+				data:"pn="+pn,
 				type:"get",
 				success:function(result){
 					//console.log(result);
@@ -86,10 +91,11 @@
 					build_pages_nav(result);
 				}
 			});
-			
-		});
+		}
 		//解析显示员工信息
 		function build_emps_table(result) {
+			//清空table表格
+			$("#emps_table tbody").empty();
 			var emps = result.extend.pageInfo.list;
 			$.each(emps,function(index,item){
 				var empIdTd = $("<td></td>").append(item.empId);
@@ -115,24 +121,63 @@
 							  .append(BtnTd).appendTo("#emps_table tbody");
 			});
 		}
-		//解析显示分信息
+		//解析显示分页信息
 		function build_pages_info(result) {
+			//清空分页信息
+			$("#page_info_area").empty();
 			$("#page_info_area").append("当前"+result.extend.pageInfo.pageNum+"页，总页码"+result.extend.pageInfo.pages+",总共条"+result.extend.pageInfo.total+"记录");
 		}
 		//解析显示分页条,点击分页要能去指定页面
 		function build_pages_nav(result) {
+			//清空分页条
+			$("#page_nav_area").empty();
 			var ul = $("<ul></ul>").addClass("pagination");
+			
+			//构建元素
 			var prePageLi = $("<li></li>").append($("<a></a>").append("&laquo;"));
 			var firstPageLi= $("<li></li>").append($("<a></a>").append("首页").attr("href","#"));
 			
+			if(result.extend.pageInfo.hasPreviousPage == false){
+				firstPageLi.addClass("disabled");
+				prePageLi.addClass("disabled");
+			}else{
+				//为元素添加点击翻页的事件
+				firstPageLi.click(function () {
+					toPage(1);
+				});
+				prePageLi.click(function () {
+					toPage(result.extend.pageInfo.pageNum-1);
+				});
+			}
+			
 			var lastPageLi = $("<li></li>").append($("<a></a>").append("尾页").attr("href","#"));
 			var NextPageLi = $("<li></li>").append($("<a></a>").append("&raquo;"));
+			if(result.extend.pageInfo.hasNextPage == false){
+				lastPageLi.addClass("disabled");
+				NextPageLi.addClass("disabled");
+			}else{
+				//为元素添加点击翻页的事件
+				lastPageLi.click(function () {
+					toPage(result.extend.pageInfo.pages);
+				});
+				NextPageLi.click(function () {
+					toPage(result.extend.pageInfo.pageNum+1);
+				});
+			}
+			
 			//添加首页和前一页的提示
 			ul.append(firstPageLi).append(prePageLi);
 			//页码遍历
 			$.each(result.extend.pageInfo.navigatepageNums,function(index,item){
+				
 				var numLi = $("<li></li>").append($("<a></a>").append(item).attr("href","#"));
+				if(result.extend.pageInfo.pageNum == item){
+					numLi.addClass("active");
+				}
 				//添加页码提示信息
+				numLi.click(function () {
+					toPage(item);
+				})
 				ul.append(numLi);
 			});
 			
