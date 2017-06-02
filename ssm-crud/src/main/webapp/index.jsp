@@ -42,14 +42,16 @@
 							<label class="col-sm-2 control-label">员工名字</label>
 							<div class="col-sm-10">
 								<input type="text" class="form-control" id="empName_add_input"
-									name="empName" placeholder="员工名字">
+									name="empName" placeholder="员工名字"> 
+								<span id="" class="help-block"></span>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Email</label>
 							<div class="col-sm-10">
 								<input type="text" class="form-control" id="email_add_input"
-									name="email" placeholder="email@163.com">
+									name="email" placeholder="email@163.com"> 
+								<span id="" class="help-block"></span>
 							</div>
 						</div>
 						<div class="form-group">
@@ -276,15 +278,36 @@
 			var empName = $("#empName_add_input").val();
 			var regName = /(^[a-zA-Z0-9_-]{6,16}$)|(^[\u2E80-\u9FFF]{2,5})/;
 			if (!regName.test(empName)) {
-				alert("用户名不合法，2-5位中文，6-16为英文加数字");
+				show_validate_msg("#empName_add_input","error","请输入正确的用户名");
 				return false;
+			}else{
+				
+				show_validate_msg("#empName_add_input","success","");
+				
 			}
 			//2.校验邮箱信息
 			var email = $("#email_add_input").val();
 			var emailReg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 			if (!emailReg.test(email)) {
-				alert("请输入正确的邮箱");
+				show_validate_msg("#email_add_input","error","请输入正确的邮箱");
 				return false;
+			}else{
+				
+				show_validate_msg("#email_add_input","success","");
+			}
+			return true;
+		}
+		//显示校验结果的提示信息
+		function show_validate_msg(ele,status,msg){
+			//清空这个元素之前的样式
+			$(ele).parent().removeClass("has-success has-error");
+			$(ele).next("span").text("");
+			if(status=="success"){
+				$(ele).parent().addClass("has-success");
+				$(ele).next("span").text(msg);
+			}else if(status=="error"){
+				$(ele).parent().addClass("has-error");
+				$(ele).next("span").text(msg);
 			}
 		}
 		//点击保存，保存员工
