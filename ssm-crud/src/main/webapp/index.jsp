@@ -62,9 +62,9 @@
 		<!-- 分页信息栏 -->
 		<div class="row">
 			<!-- 文字信息 -->
-			<div class="col-md-6">当前页，总页码,总共条记录</div>
+			<div class="col-md-6" id="page_info_area"></div>
 			<!-- 分页条信息 -->
-			<div class="col-md-6">
+			<div class="col-md-6" id="page_nav_area">
 				
 			</div>
 		</div>
@@ -81,11 +81,14 @@
 					//1.解析并显示员工数据
 					build_emps_table(result);
 					//2.解析并显示分页数据
+					build_pages_info(result);
+					//3.解析并显示分页条
+					build_pages_nav(result);
 				}
 			});
 			
 		});
-		
+		//解析显示员工信息
 		function build_emps_table(result) {
 			var emps = result.extend.pageInfo.list;
 			$.each(emps,function(index,item){
@@ -112,8 +115,32 @@
 							  .append(BtnTd).appendTo("#emps_table tbody");
 			});
 		}
+		//解析显示分信息
+		function build_pages_info(result) {
+			$("#page_info_area").append("当前"+result.extend.pageInfo.pageNum+"页，总页码"+result.extend.pageInfo.pages+",总共条"+result.extend.pageInfo.total+"记录");
+		}
+		//解析显示分页条,点击分页要能去指定页面
 		function build_pages_nav(result) {
+			var ul = $("<ul></ul>").addClass("pagination");
+			var prePageLi = $("<li></li>").append($("<a></a>").append("&laquo;"));
+			var firstPageLi= $("<li></li>").append($("<a></a>").append("首页").attr("href","#"));
 			
+			var lastPageLi = $("<li></li>").append($("<a></a>").append("尾页").attr("href","#"));
+			var NextPageLi = $("<li></li>").append($("<a></a>").append("&raquo;"));
+			//添加首页和前一页的提示
+			ul.append(firstPageLi).append(prePageLi);
+			//页码遍历
+			$.each(result.extend.pageInfo.navigatepageNums,function(index,item){
+				var numLi = $("<li></li>").append($("<a></a>").append(item).attr("href","#"));
+				//添加页码提示信息
+				ul.append(numLi);
+			});
+			
+			//添加下一页和尾页的提示
+			ul.append(NextPageLi).append(lastPageLi);
+			//把ul加入到nav
+			var navEle=$("<nav></nav>").append(ul);
+			navEle.appendTo("#page_nav_area");
 		}
 	</script>
 </body>
