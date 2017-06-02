@@ -59,4 +59,5 @@ public class EmployeeController {
 		model.addAttribute("pageInfo", page);
 		return "list";
 	}
+	 
 }
