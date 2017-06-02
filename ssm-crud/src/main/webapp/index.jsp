@@ -56,7 +56,8 @@
 							<label class="col-sm-2 control-label">性别</label>
 							<div class="col-sm-10">
 								<label class="radio-inline"> <input type="radio"
-									name="gender" id="gender1_add_input" value="M" checked="checked"> 男
+									name="gender" id="gender1_add_input" value="M"
+									checked="checked"> 男
 								</label> <label class="radio-inline"> <input type="radio"
 									name="gender" id="gender2_add_input" value="F"> 女
 								</label>
@@ -67,7 +68,7 @@
 							<div class="col-sm-4">
 								<!-- 部门提交部门id -->
 								<select class="form-control" name="dId" id="dept_add_select">
-									
+
 								</select>
 							</div>
 						</div>
@@ -77,7 +78,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary">保存</button>
+					<button type="button" class="btn btn-primary" id="emp_save_btn">保存</button>
 				</div>
 			</div>
 		</div>
@@ -127,6 +128,7 @@
 		</div>
 	</div>
 	<script type="text/javascript">
+		var totalRecord;
 		//1.页面加载完毕以后直接发送一个Ajax请求，获取分页数据
 		$(function() {
 			//去首页
@@ -192,6 +194,7 @@
 					"当前" + result.extend.pageInfo.pageNum + "页，总页码"
 							+ result.extend.pageInfo.pages + ",总共条"
 							+ result.extend.pageInfo.total + "记录");
+			totalRecord = result.extend.pageInfo.total;
 		}
 		//解析显示分页条,点击分页要能去指定页面
 		function build_pages_nav(result) {
@@ -267,14 +270,35 @@
 				backdrop : "static"
 			});
 		});
-		
+
+		$("#emp_save_btn").click(function() {
+			//1.将模态框中添加的数据提交给服务器进行保存
+
+			//2.发送ajax请求保存数据
+			$.ajax({
+				url : "${APP_PATH}/emp",
+				type : "POST",
+				data : $("#empAddModal form").serialize(),
+				success : function(result) {
+					//alert(result.msg);
+					//1.关闭模态框
+					$('#empAddModal').modal('hide');
+					//2.来到最后一页,发送ajax请求显示
+					toPage(totalRecord);
+					
+				}
+			});
+
+		});
+
 		function getDepts() {
 			$.ajax({
-				url:"${APP_PATH}/depts",
-				type:"GET",
-				success:function(result){
-					$.each(result.extend.depts,function(){
-						var optionElement = $("<option></option>").append(this.deptName).attr("value",this.deptId);
+				url : "${APP_PATH}/depts",
+				type : "GET",
+				success : function(result) {
+					$.each(result.extend.depts, function() {
+						var optionElement = $("<option></option>").append(
+								this.deptName).attr("value", this.deptId);
 						optionElement.appendTo("#dept_add_select");
 					});
 				}
