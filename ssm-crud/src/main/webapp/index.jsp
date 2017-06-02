@@ -270,10 +270,31 @@
 				backdrop : "static"
 			});
 		});
-
+		//校验表单数据
+		function validate_add_form() {
+			//1.获取到要校验的数据，使用正则表达式
+			var empName = $("#empName_add_input").val();
+			var regName = /(^[a-zA-Z0-9_-]{6,16}$)|(^[\u2E80-\u9FFF]{2,5})/;
+			if (!regName.test(empName)) {
+				alert("用户名不合法，2-5位中文，6-16为英文加数字");
+				return false;
+			}
+			//2.校验邮箱信息
+			var email = $("#email_add_input").val();
+			var emailReg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+			if (!emailReg.test(email)) {
+				alert("请输入正确的邮箱");
+				return false;
+			}
+		}
+		//点击保存，保存员工
 		$("#emp_save_btn").click(function() {
 			//1.将模态框中添加的数据提交给服务器进行保存
-
+			//1.先对要提交给服务器的数据进行校验
+			if (!validate_add_form()) {
+				return false;
+			}
+			;
 			//2.发送ajax请求保存数据
 			$.ajax({
 				url : "${APP_PATH}/emp",
@@ -285,7 +306,7 @@
 					$('#empAddModal').modal('hide');
 					//2.来到最后一页,发送ajax请求显示
 					toPage(totalRecord);
-					
+
 				}
 			});
 
