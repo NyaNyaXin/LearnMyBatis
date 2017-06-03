@@ -24,6 +24,73 @@
 	src="${APP_PATH}/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 </head>
 <body>
+
+<!-- 员工修改的模态框 -->
+	<div class="modal fade" id="empUpdateModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">员工修改</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">员工名字</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="empName_update_input"
+									name="empName" placeholder="员工名字"> 
+								<span id="" class="help-block"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Email</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="email_update_input"
+									name="email" placeholder="email@163.com"> 
+								<span id="" class="help-block"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">性别</label>
+							<div class="col-sm-10">
+								<label class="radio-inline"> <input type="radio"
+									name="gender" id="gender1_update_input" value="M"
+									checked="checked"> 男
+								</label> <label class="radio-inline"> <input type="radio"
+									name="gender" id="gender2_update_input" value="F"> 女
+								</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">部门</label>
+							<div class="col-sm-4">
+								<!-- 部门提交部门id -->
+								<select class="form-control" name="dId" id="dept_update_select">
+
+								</select>
+							</div>
+						</div>
+
+
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="emp_save_update">更新</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
 	<!-- 员工添加的模态框 -->
 	<div class="modal fade" id="empAddModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel">
@@ -172,12 +239,12 @@
 								</button>
 				 */
 				var editBtn = $("<button></button>").addClass(
-						"btn btn-primary btn-sm").append(
+						"btn btn-primary btn-sm edit_btn").append(
 						$("<span></span>").addClass(
 								"glyphicon glyphicon-pencil")).append("编辑")
 
 				var delBtn = $("<button></button>").addClass(
-						"btn btn-danger btn-sm").append(
+						"btn btn-danger btn-sm delete_btn").append(
 						$("<span></span>").addClass(
 								"glyphicon glyphicon-remove")).append("删除")
 				var BtnTd = $("<td></td>").append(editBtn).append(" ").append(
@@ -277,7 +344,7 @@
 			//清除表单数据（表单完整重置，表单数据即样式）
 			resetform("#empAddModal form")
 			//发送ajax请求获得部门信息屏显示下拉列表
-			getDepts();
+			getDepts("#empAddModal select");
 			$('#empAddModal').modal({
 				backdrop : "static"
 			});
@@ -360,7 +427,9 @@
 
 		});
 
-		function getDepts() {
+		function getDepts(ele) {
+			//清空之前下拉列表的值
+			$(ele).empty();
 			$.ajax({
 				url : "${APP_PATH}/depts",
 				type : "GET",
@@ -368,7 +437,7 @@
 					$.each(result.extend.depts, function() {
 						var optionElement = $("<option></option>").append(
 								this.deptName).attr("value", this.deptId);
-						optionElement.appendTo("#dept_add_select");
+						optionElement.appendTo(ele);
 					});
 				}
 			});
@@ -390,6 +459,17 @@
 						$("#emp_save_btn").attr("ajax_va","error");
 					}
 				}
+			});
+		});
+		
+		//1.按钮创建之前是无法绑定事件的
+		//jQuery新版没有live方法，要是用on进行替代
+		$(document).on("click",".edit_btn",function(){
+			//0.查出并显示员工信息
+			//1.查询出部门信息，并显示部门列表
+			getDepts("#empUpdateModal select");
+			$('#empUpdateModal').modal({
+				backdrop : "static"
 			});
 		});
 	</script>
