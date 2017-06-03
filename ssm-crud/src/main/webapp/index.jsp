@@ -264,10 +264,18 @@
 			var navEle = $("<nav></nav>").append(ul);
 			navEle.appendTo("#page_nav_area");
 		}
+		
+		function resetform(ele) {
+			//充值表单内容
+			$(ele)[0].reset();
+			//清空验证样式
+			$(ele).find("*").removeClass("has-error has-success");
+			$(ele).find(".help-block").text("");
+		}
 		//点击新增按钮弹出模态框
 		$("#emp_add_modal_btn").click(function() {
-			//清除表单数据（表单重置）
-			$("#empAddModal form")[0].reset();
+			//清除表单数据（表单完整重置，表单数据即样式）
+			resetform("#empAddModal form")
 			//发送ajax请求获得部门信息屏显示下拉列表
 			getDepts();
 			$('#empAddModal').modal({
@@ -355,7 +363,7 @@
 		}
 		
 		$("#empName_add_input").change(function () {
-			var empName = this.value
+			var empName = this.value;
 			//发送Ajax请求校验用户名是否可用
 			$.ajax({
 				url:"${APP_PATH}/checkuser",
@@ -366,7 +374,7 @@
 						show_validate_msg("#empName_add_input","success","用户名可用");
 						$("#emp_save_btn").attr("ajax_va","success");
 					}else{
-						show_validate_msg("#empName_add_input","error","用户名不可用");
+						show_validate_msg("#empName_add_input","error",result.extend.va_msg);
 						$("#emp_save_btn").attr("ajax_va","error");
 					}
 				}

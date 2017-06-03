@@ -73,11 +73,17 @@ public class EmployeeController {
 	@ResponseBody
 	@RequestMapping("/checkuser")
 	public Message checkUser(@RequestParam("empName") String empName) {
+		//先判断用户名是否是合法的表达式
+		String regx = "(^[a-zA-Z0-9_-]{6,16}$)|(^[\\u2E80-\\u9FFF]{2,5})";
+		if(!empName.matches(regx)) {
+			return Message.fail().add("va_msg", "用户名不合法");
+		}
+		//数据库用户名重复校验
 		Boolean b =  employeeService.checkUser(empName);
 		if(b) {
 			return Message.success();
 		}else {
-			return Message.fail();
+			return Message.fail().add("va_msg", "用户名不可用");
 		}
 	}
 }
