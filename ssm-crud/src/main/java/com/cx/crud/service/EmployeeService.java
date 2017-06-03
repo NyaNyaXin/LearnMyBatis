@@ -39,4 +39,12 @@ public class EmployeeService {
 		return count==0;
 	}
 	
+	/**
+	 * 获取单个员工，id
+	 * **/
+	public Employee getEmp(Integer id) {
+		Employee employee = employeeMapper.selectByPrimaryKeyWithDept(id);
+		return employee;
+	}
+	
 }

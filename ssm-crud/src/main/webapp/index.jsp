@@ -42,8 +42,7 @@
 						<div class="form-group">
 							<label class="col-sm-2 control-label">员工名字</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="empName_update_input"
-									name="empName" placeholder="员工名字"> 
+								<p class="form-control-static" id="empName_update_static"></p>
 								<span id="" class="help-block"></span>
 							</div>
 						</div>
@@ -233,16 +232,14 @@
 				var empEmailTd = $("<td></td>").append(item.email);
 				var empDepeName = $("<td></td>").append(
 						item.department.deptName);
-				/*
-					<button class="btn btn-primary btn-sm" aria-label="Left Align">
-									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>编辑
-								</button>
-				 */
 				var editBtn = $("<button></button>").addClass(
 						"btn btn-primary btn-sm edit_btn").append(
 						$("<span></span>").addClass(
-								"glyphicon glyphicon-pencil")).append("编辑")
-
+								"glyphicon glyphicon-pencil")).append("编辑");
+				
+				//为编辑按钮添加一个自定义的属性，来表示当前员工的id
+				editBtn.attr("edit-id",item.empId);
+				 
 				var delBtn = $("<button></button>").addClass(
 						"btn btn-danger btn-sm delete_btn").append(
 						$("<span></span>").addClass(
@@ -465,13 +462,30 @@
 		//1.按钮创建之前是无法绑定事件的
 		//jQuery新版没有live方法，要是用on进行替代
 		$(document).on("click",".edit_btn",function(){
-			//0.查出并显示员工信息
+			
 			//1.查询出部门信息，并显示部门列表
 			getDepts("#empUpdateModal select");
+			//0.查出并显示员工信息
+			getEmp($(this).attr("edit-id"));
+			
 			$('#empUpdateModal').modal({
 				backdrop : "static"
 			});
 		});
+		
+		function getEmp(id) {
+			$.ajax({
+				url:"${APP_PATH}/emp/"+id,
+				type:"GET",
+				success:function(result){
+					var empData = result.extend.emp;
+					$("#empName_update_static").text(empData.empName);
+					$("#email_update_input").val(empData.email);
+					$("#empUpdateModal input[name=gender]").val([empData.gender]);
+					$("#empUpdateModal select").val([empData.dId]);
+				}
+			});
+		}
 	</script>
 </body>
 </html>
