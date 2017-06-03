@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.annotation.RequestScope;
 
 import com.cx.crud.bean.Employee;
 import com.cx.crud.bean.Message;
@@ -118,5 +120,37 @@ public class EmployeeController {
 	public Message getEmp(@PathVariable("id")Integer id) {
 		Employee employee = employeeService.getEmp(id);
 		return Message.success().add("emp", employee);
+	}
+	
+	/**
+	 * 
+	 * 保存更新
+	 * 
+	 * 如果直接发送Ajax=put形式的请求
+	 * 封装的数据将为
+	 * Employee [empId=1026, empName=null, gender=null, email=null, dId=null, department=null]
+	 * 
+	 * 问题：
+	 * 请求体中有数据，但是employee对象封装不上
+	 * update tbl_emp where emp_id =111
+	 * 
+	 * 原因：
+	 * Tomcat：
+	 * 		1.将请求体中的数据封装程一个map
+	 * 		2.request.getParamter("empName")就会从这个map中取值
+	 * 		3.SpringMVC封装POJO对象的时候。会把POJO中的每一个都通过getParamter方法获取到
+	 * Ajax发送PUT请求引发的问题
+	 * 		PUT请求体中的数据getParamter拿不到
+	 * 		Tomcat看见了PUT请求不会讲请求封装为map
+	 * 		只有POST才可以
+	 * org.apache.catalina.connector.Request;
+	 * **/
+	@ResponseBody
+	@RequestMapping(value="/emp/{empId}",method=RequestMethod.PUT)
+	public Message saveEmp(Employee employee ,HttpServletRequest request) {
+		System.out.println(request.getParameter("empName"));
+		System.out.println("将要更新的数据"+employee);
+		employeeService.updateEmp(employee);
+		return Message.success();
 	}
 }

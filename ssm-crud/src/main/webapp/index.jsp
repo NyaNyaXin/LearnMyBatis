@@ -80,7 +80,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" id="emp_save_update">更新</button>
+					<button type="button" class="btn btn-primary" id="emp_update_btn">更新</button>
 				</div>
 			</div>
 		</div>
@@ -465,9 +465,10 @@
 			
 			//1.查询出部门信息，并显示部门列表
 			getDepts("#empUpdateModal select");
-			//0.查出并显示员工信息
+			//2.查出并显示员工信息
 			getEmp($(this).attr("edit-id"));
-			
+			//3.把员工id传递给模态框的更新按钮
+			$("#emp_update_btn").attr("edit-id",$(this).attr("edit-id"));
 			$('#empUpdateModal').modal({
 				backdrop : "static"
 			});
@@ -486,6 +487,29 @@
 				}
 			});
 		}
+		
+		//点击更新，更新员工信息
+		$("#emp_update_btn").click(function () {
+			//验证邮箱是否合法
+			var email = $("#email_update_input").val();
+			var emailReg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+			if (!emailReg.test(email)) {
+				show_validate_msg("#email_update_input","error","请输入正确的邮箱");
+				return false;
+			}else{
+				
+				show_validate_msg("#email_update_input","success","");
+			}
+			//2.发送ajax请求，保存更新的员工数据
+			$.ajax({
+				url:"${APP_PATH}/emp/"+$(this).attr("edit-id"),
+				type:"PUT",
+				data:$("#empUpdateModal form").serialize(),
+				success:function(result){
+					alert(result.msg);
+				}
+			});
+		});
 	</script>
 </body>
 </html>
