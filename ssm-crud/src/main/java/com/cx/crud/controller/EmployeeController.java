@@ -1,10 +1,16 @@
 package com.cx.crud.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cx.crud.bean.Employee;
 import com.cx.crud.bean.Message;
 import com.cx.crud.service.EmployeeService;
+import com.fasterxml.jackson.databind.deser.std.NumberDeserializers.BigIntegerDeserializer;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -60,12 +67,27 @@ public class EmployeeController {
 		model.addAttribute("pageInfo", page);
 		return "list";
 	}
-	
+	/**
+	 * 1.支持JSR303校验
+	 * 2.导入Hibernate-validator
+	 * **/
 	@RequestMapping(value="/emp",method=RequestMethod.POST)
 	@ResponseBody
-	public Message saveEmp(Employee employee) {
-		employeeService.saveEmp(employee);
-		return Message.success();
+	public Message saveEmp(@Valid Employee employee,BindingResult result) {
+		if(result.hasErrors()) {
+			Map<String, Object> map = new HashMap<>();
+			//校验失败，返回失败，在模态框中显示校验失败的错误信息
+			List<FieldError> fieldErrors = result.getFieldErrors();
+			for(FieldError fieldError:fieldErrors) {
+				System.out.println("错误的字段名："+fieldError.getField()+"，错误信息是："+fieldError.getDefaultMessage());
+				map.put(fieldError.getField(), fieldError.getDefaultMessage());
+			}
+			return Message.fail().add("errorFields", map);
+		}else {
+			employeeService.saveEmp(employee);
+			return Message.success();
+		}
+		
 	}
 	/**
 	 * 检查用户名

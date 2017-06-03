@@ -129,6 +129,17 @@
 		    <version>5.0.0</version>
 		</dependency>
 		
+		<!-- JSR303校验支持，tomcat7及以上
+			tomcat7以下的服务器，el不是最新的标准，额外给服务器包中替换新标准的el
+		 -->
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>5.4.1.Final</version>
+		</dependency>
+		
+		
 	</dependencies>
 
 </project>

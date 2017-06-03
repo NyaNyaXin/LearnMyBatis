@@ -326,7 +326,7 @@
 			//1.先对要提交给服务器的数据进行校验
 			if (!validate_add_form()) {
 				return false;
-			}
+			} 
 			//1.判断之前的Ajax用户名校验是否成功。如果成功
 			if($(this).attr("ajax_va")=="error"){
 				return false;	
@@ -337,11 +337,23 @@
 				type : "POST",
 				data : $("#empAddModal form").serialize(),
 				success : function(result) {
-					//alert(result.msg);
-					//1.关闭模态框
-					$('#empAddModal').modal('hide');
-					//2.来到最后一页,发送ajax请求显示
-					toPage(totalRecord);
+					if(result.code==100){
+						//alert(result.msg);
+						//1.关闭模态框
+						$('#empAddModal').modal('hide');
+						//2.来到最后一页,发送ajax请求显示
+						toPage(totalRecord);
+					}else{
+						//显示失败信息
+						//console.log(result);
+						//有哪个字段的错误信息，就显示那个字段的错误信息
+						if(undefined != result.extend.errorFields.email){
+							show_validate_msg("#email_add_input","error",result.extend.errorFields.email);
+						}
+						if(undefined != result.extend.errorFields.empName){
+							show_validate_msg("#empName_add_input","error",result.extend.errorFields.empName);
+						}
+					}
 
 				}
 			});
