@@ -266,6 +266,8 @@
 		}
 		//点击新增按钮弹出模态框
 		$("#emp_add_modal_btn").click(function() {
+			//清除表单数据（表单重置）
+			$("#empAddModal form")[0].reset();
 			//发送ajax请求获得部门信息屏显示下拉列表
 			getDepts();
 			$('#empAddModal').modal({
@@ -317,7 +319,10 @@
 			if (!validate_add_form()) {
 				return false;
 			}
-			;
+			//1.判断之前的Ajax用户名校验是否成功。如果成功
+			if($(this).attr("ajax_va")=="error"){
+				return false;	
+			}
 			//2.发送ajax请求保存数据
 			$.ajax({
 				url : "${APP_PATH}/emp",
@@ -348,6 +353,25 @@
 				}
 			});
 		}
+		
+		$("#empName_add_input").change(function () {
+			var empName = this.value
+			//发送Ajax请求校验用户名是否可用
+			$.ajax({
+				url:"${APP_PATH}/checkuser",
+				data:"empName="+empName,
+				type:"POST",
+				success:function(result){
+					if(result.code==100){
+						show_validate_msg("#empName_add_input","success","用户名可用");
+						$("#emp_save_btn").attr("ajax_va","success");
+					}else{
+						show_validate_msg("#empName_add_input","error","用户名不可用");
+						$("#emp_save_btn").attr("ajax_va","error");
+					}
+				}
+			});
+		});
 	</script>
 </body>
 </html>

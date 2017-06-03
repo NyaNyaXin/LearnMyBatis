@@ -67,4 +67,17 @@ public class EmployeeController {
 		employeeService.saveEmp(employee);
 		return Message.success();
 	}
+	/**
+	 * 检查用户名
+	 * **/
+	@ResponseBody
+	@RequestMapping("/checkuser")
+	public Message checkUser(@RequestParam("empName") String empName) {
+		Boolean b =  employeeService.checkUser(empName);
+		if(b) {
+			return Message.success();
+		}else {
+			return Message.fail();
+		}
+	}
 }
