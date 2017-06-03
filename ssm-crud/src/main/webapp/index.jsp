@@ -196,7 +196,7 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		var totalRecord;
+		var totalRecord,currentNum;
 		//1.页面加载完毕以后直接发送一个Ajax请求，获取分页数据
 		$(function() {
 			//去首页
@@ -261,6 +261,7 @@
 							+ result.extend.pageInfo.pages + ",总共条"
 							+ result.extend.pageInfo.total + "记录");
 			totalRecord = result.extend.pageInfo.total;
+			currentNum = result.extend.pageInfo.pageNum;
 		}
 		//解析显示分页条,点击分页要能去指定页面
 		function build_pages_nav(result) {
@@ -506,7 +507,9 @@
 				type:"PUT",
 				data:$("#empUpdateModal form").serialize(),
 				success:function(result){
-					alert(result.msg);
+					//1.关闭对话框，回到原来的页面
+					$('#empUpdateModal').modal("hide");
+					toPage(currentNum);
 				}
 			});
 		});

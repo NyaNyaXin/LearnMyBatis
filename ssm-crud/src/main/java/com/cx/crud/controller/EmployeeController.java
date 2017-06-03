@@ -144,6 +144,12 @@ public class EmployeeController {
 	 * 		Tomcat看见了PUT请求不会讲请求封装为map
 	 * 		只有POST才可以
 	 * org.apache.catalina.connector.Request;
+	 * 
+	 * 解決方式
+	 * 要想支持PUT請求且封裝數據
+	 * 要使用HttpPutFormContentFilter
+	 * 把請求躰中的數據包裝成map
+	 * request被重新包裝：request.getParamter方法被重寫，就會從自己封裝的map中獲取
 	 * **/
 	@ResponseBody
 	@RequestMapping(value="/emp/{empId}",method=RequestMethod.PUT)
