@@ -1,5 +1,6 @@
 package com.cx.crud.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -159,10 +160,28 @@ public class EmployeeController {
 		employeeService.updateEmp(employee);
 		return Message.success();
 	}
+	/**
+	 * 单个，批量二合一
+	 * 批量删除1-2-3
+	 * **/
 	@ResponseBody
-	@RequestMapping(value="/emp/{id}",method=RequestMethod.DELETE)
-	public Message deleteEmpById(@PathVariable("id") Integer id) {
-		employeeService.deleteEmp(id);
+	@RequestMapping(value="/emp/{ids}",method=RequestMethod.DELETE)
+	public Message deleteEmpById(@PathVariable("ids") String ids) {
+		//批量删除
+		if(ids.contains("-")) {
+			String[] str_ids = ids.split("-");
+			List<Integer> del_ids = new ArrayList<>();
+			//组装id的集合
+			for(String string:str_ids) {
+				del_ids.add(Integer.parseInt(string));
+			}
+			employeeService.deleteBatch(del_ids);
+		}else {
+			Integer id = Integer.parseInt(ids);
+			employeeService.deleteEmp(id);
+		}
+		
+		
 		
 		return Message.success();
 	}

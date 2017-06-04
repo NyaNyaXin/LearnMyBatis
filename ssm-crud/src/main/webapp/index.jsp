@@ -164,7 +164,7 @@
 		<div class="row">
 			<div class="col-md-4 col-md-offset-8">
 				<button class="btn btn-primary" id="emp_add_modal_btn">新增</button>
-				<button class="btn btn-danger">刪除</button>
+				<button class="btn btn-danger" id="emp_delete_all_btn">刪除</button>
 			</div>
 		</div>
 		<!-- 表格数据 -->
@@ -523,7 +523,7 @@
 		//单个删除
 		$(document).on("click",".delete_btn",function(){
 			//1.弹出确认删除对话框
-			var empName = $(this).parents("tr").find("td:eq(1)").text();
+			var empName = $(this).parents("tr").find("td:eq(2)").text();
 			var empId = $(this).attr("del-id");
 			if(confirm("确认删除【"+empName+"】吗？")){
 				//确认发送Ajax请求
@@ -550,6 +550,32 @@
 			var flag = $(".check_item:checked").length==$(".check_item").length;
 			$("#check_all").prop("checked",flag);
 			
+		});
+		//点击全部删除，批量删除
+		$("#emp_delete_all_btn").click(function(){
+			var empNames = "";
+			var empIds = "";
+			$.each($(".check_item:checked"),function(){
+				empNames += $(this).parents("tr").find("td:eq(2)").text()+",";
+				//组装员工id的字符串
+				empIds += $(this).parents("tr").find("td:eq(1)").text()+"-";
+			});
+			//取出emps多余的字符
+			empNames = empNames.substring(0,empNames.length-1);
+			//取出ids多余的字符
+			empIds = empIds.substring(0,empIds.length-1);
+			if(confirm("确认删除【"+empNames+"】吗？")){
+				//发送Ajax请求删除员工
+				$.ajax({
+					url:"${APP_PATH}/emp/"+empIds,
+					type:"DELETE",
+					success:function(result){
+						//1.关闭对话框，提示删除成功，回到原来的页面
+						alert(result.msg);
+						toPage(currentNum);
+					}
+				});
+			}
 		});
 	</script>
 </body>
