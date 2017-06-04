@@ -159,4 +159,11 @@ public class EmployeeController {
 		employeeService.updateEmp(employee);
 		return Message.success();
 	}
+	@ResponseBody
+	@RequestMapping(value="/emp/{id}",method=RequestMethod.DELETE)
+	public Message deleteEmpById(@PathVariable("id") Integer id) {
+		employeeService.deleteEmp(id);
+		
+		return Message.success();
+	}
 }

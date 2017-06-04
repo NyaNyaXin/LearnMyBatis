@@ -243,7 +243,9 @@
 				var delBtn = $("<button></button>").addClass(
 						"btn btn-danger btn-sm delete_btn").append(
 						$("<span></span>").addClass(
-								"glyphicon glyphicon-remove")).append("删除")
+								"glyphicon glyphicon-remove")).append("删除");
+				//为编辑按钮添加一个自定义的属性，来表示当前员工的id
+				delBtn.attr("del-id",item.empId);
 				var BtnTd = $("<td></td>").append(editBtn).append(" ").append(
 						delBtn);
 				//append方法执行完成后还是返回原来的元素
@@ -512,6 +514,23 @@
 					toPage(currentNum);
 				}
 			});
+		});
+		//单个删除
+		$(document).on("click",".delete_btn",function(){
+			//1.弹出确认删除对话框
+			var empName = $(this).parents("tr").find("td:eq(1)").text();
+			var empId = $(this).attr("del-id");
+			if(confirm("确认删除【"+empName+"】吗？")){
+				//确认发送Ajax请求
+				$.ajax({
+					url:"${APP_PATH}/emp/"+empId,
+					type:"DELETE",
+					success:function(result){
+						//1.关闭对话框，回到原来的页面
+						toPage(currentNum);
+					}
+				});
+			}
 		});
 	</script>
 </body>
